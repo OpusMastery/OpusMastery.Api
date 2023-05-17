@@ -10,14 +10,17 @@ jobs:
     runs-on: self-hosted
     env:
       DOCKER_REPOSITORY_OWNER: zvesdochyot
+      DOCKER_REPOSITORY_PASSWORD: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
     steps:
     - name: Checkout existing code
       uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run:
+    - name: Build & push Docker image
+      run: |
         docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
+        docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
+        docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
 #     - name: Setup .NET Core SDK
 #       uses: actions/setup-dotnet@v3.0.3
