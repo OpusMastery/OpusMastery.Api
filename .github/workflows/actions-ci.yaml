@@ -6,27 +6,42 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build & publish
     runs-on: self-hosted
     env:
       DOCKER_REPOSITORY_OWNER: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
       DOCKER_REPOSITORY_PASSWORD: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
     steps:
-    - name: Checkout existing code
-      uses: actions/checkout@v3
+      - name: Checkout existing code
+        uses: actions/checkout@v3
 
-    - name: Build & push Docker image to Docker Hub
-      run: |
-        docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
-        docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
-        docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
+      - name: Build & push Docker image to Docker Hub
+        run: |
+          docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
+          docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
+          docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
-    - name: Kubernetes Set Context
-      uses: Azure/k8s-set-context@v3.0
-      with:
-       method: kubeconfig
-       kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    needs: build
 
-    - name: Deploy to Kubernetes cluster
-      uses: Azure/k8s-deploy@v4.9
+    steps:
+      - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v3.0
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
+
+      - name: Deploy to K3s cluster
+        uses: Azure/k8s-deploy@v4.9
+        with:
+          action: deploy
+          manifests: |
+            ./.github/deployment.yaml
+            ./.github/ingress.yaml
+          strategy: canary
+          namespace: $GITHUB_WORKFLOW
+          images: $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
+          percentage: 50
