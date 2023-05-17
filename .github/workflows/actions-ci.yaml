@@ -39,8 +39,8 @@ jobs:
         with:
           action: deploy
           manifests: |
-            ./.github/manifests/deployment.yaml
-            ./.github/manifests/ingress.yaml
+            .github/manifests/deployment.yaml
+            .github/manifests/ingress.yaml
           strategy: canary
           namespace: $GITHUB_WORKFLOW
           images: $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
