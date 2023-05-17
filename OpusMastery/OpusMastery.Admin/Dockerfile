@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS backend-build
 WORKDIR /src
-COPY ["OpusMastery.Admin/OpusMastery.Admin.csproj", "OpusMastery.Admin/"]
+COPY ["OpusMastery.Admin.csproj", "OpusMastery.Admin/"]
 RUN dotnet restore "OpusMastery.Admin/OpusMastery.Admin.csproj"
 COPY . .
 WORKDIR "/src/OpusMastery.Admin"
