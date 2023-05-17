@@ -1,0 +1,28 @@
+name: TestWorkflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: self-hosted
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3.0.3
+      with:
+        dotnet-version: 7.x
+      env:
+        DOTNET_INSTALL_DIR: "./.dotnet"
+
+    - name: Check .NET version
+      run: |
+        dotnet --version
+
+    - name: Print env var
+      run: |
+        echo $GITHUB_SHA
