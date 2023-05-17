@@ -9,7 +9,7 @@ jobs:
     name: Build
     runs-on: self-hosted
     env:
-      DOCKER_REPOSITORY_NAME: zvesdochyot/$GITHUB_WORKFLOW
+      DOCKER_REPOSITORY_OWNER: zvesdochyot
 
     steps:
     - name: Checkout existing code
@@ -17,7 +17,7 @@ jobs:
 
     - name: Build Docker image
       run:
-        docker build ./OpusMastery/OpusMastery.Admin/ --file ./OpusMastery/OpusMastery.Admin/Dockerfile -t $DOCKER_REPOSITORY_NAME:$GITHUB_RUN_NUMBER
+        docker build ./OpusMastery/OpusMastery.Admin/ --file ./OpusMastery/OpusMastery.Admin/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
 #     - name: Setup .NET Core SDK
 #       uses: actions/setup-dotnet@v3.0.3
