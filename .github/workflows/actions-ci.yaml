@@ -1,4 +1,4 @@
-name: TestWorkflow
+name: opusmastery-api
 
 on:
   push:
@@ -8,21 +8,20 @@ jobs:
   build:
     name: Build
     runs-on: self-hosted
+    env:
+      DOCKER_REPOSITORY_OWNER: zvesdochyot
+
     steps:
-    - name: Checkout
+    - name: Checkout existing code
       uses: actions/checkout@v3
 
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v3.0.3
-      with:
-        dotnet-version: 7.x
-      env:
-        DOTNET_INSTALL_DIR: "./.dotnet"
+    - name: Build Docker image
+      run:
+        docker build ./OpusMastery/OpusMastery.Admin/ --file ./OpusMastery/OpusMastery.Admin/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
-    - name: Check .NET version
-      run: |
-        dotnet --version
-
-    - name: Print env var
-      run: |
-        echo $GITHUB_SHA
+#     - name: Setup .NET Core SDK
+#       uses: actions/setup-dotnet@v3.0.3
+#       with:
+#         dotnet-version: 7.x
+#       env:
+#         DOTNET_INSTALL_DIR: "./.dotnet"
