@@ -9,22 +9,24 @@ jobs:
     name: Build
     runs-on: self-hosted
     env:
-      DOCKER_REPOSITORY_OWNER: zvesdochyot
+      DOCKER_REPOSITORY_OWNER: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
       DOCKER_REPOSITORY_PASSWORD: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
     steps:
     - name: Checkout existing code
       uses: actions/checkout@v3
 
-    - name: Build & push Docker image
+    - name: Build & push Docker image to Docker Hub
       run: |
         docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
         docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
         docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
-#     - name: Setup .NET Core SDK
-#       uses: actions/setup-dotnet@v3.0.3
-#       with:
-#         dotnet-version: 7.x
-#       env:
-#         DOTNET_INSTALL_DIR: "./.dotnet"
+    - name: Kubernetes Set Context
+      uses: Azure/k8s-set-context@v3.0
+      with:
+       method: kubeconfig
+       kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
+
+    - name: Deploy to Kubernetes cluster
+      uses: Azure/k8s-deploy@v4.9
