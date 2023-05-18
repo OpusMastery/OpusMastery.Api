@@ -41,8 +41,8 @@ jobs:
           files: '[".github/manifests/*.yaml"]'
         env:
           DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
-          IMAGE_NAME: $GITHUB_WORKFLOW
-          IMAGE_TAG: v$GITHUB_RUN_NUMBER
+          IMAGE_NAME: ${{ github.workflow }}
+          IMAGE_TAG: v${{ github.run_number }}
 
       - name: Kubectl tool installer
         uses: Azure/setup-kubectl@v3
