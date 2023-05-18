@@ -10,7 +10,7 @@ spec:
     - match: Host(`api.opusmastery.org`)
       kind: Rule
       services:
-        - name: opusmastery-api
+        - name: opusmastery-api-service
           port: 80
   tls:
     certResolver: letsencrypt
