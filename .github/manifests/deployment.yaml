@@ -1,1 +1,19 @@
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opusmastery-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: opusmastery-api
+  template:
+    metadata:
+      labels:
+        app: opusmastery-api
+    spec:
+      containers:
+        - name: opusmastery-api
+          image: zvesdochyot/opusmastery-api
+          ports:
+            - containerPort: 80
