@@ -23,4 +23,4 @@ spec:
         - name: opusmastery-api-instance
           image: {{DOCKER_REPOSITORY}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
           ports:
-            - containerPort: 80
+            - containerPort: 5000
