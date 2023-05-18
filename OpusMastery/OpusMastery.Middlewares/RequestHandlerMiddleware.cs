@@ -6,7 +6,7 @@ namespace OpusMastery.Middlewares;
 public class RequestHandlerMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
+    private readonly ILogger<RequestHandlerMiddleware> _logger;
 
     public RequestHandlerMiddleware(RequestDelegate next, ILogger<RequestHandlerMiddleware> logger)
     {
@@ -16,9 +16,8 @@ public class RequestHandlerMiddleware
 
     public Task Invoke(HttpContext context)
     {
-        _logger.LogWarning("HttpContext Path: {Path}", context.Request.Path.ToString());
-        _logger.LogWarning("HttpContext Host: {Host}", context.Request.Host.Host);
-        _logger.LogWarning("HttpContext Client IP: {RemoteIpAddress}", context.Connection.RemoteIpAddress);
+        _logger.LogInformation("Request host: {Host}", context.Request.Host.ToString());
+        _logger.LogInformation("Request path: {Path}", context.Request.Path.ToString());
         return _next(context);
     }
 }
