@@ -45,4 +45,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
 
       - name: Deploy to K3s cluster
-        run: kubectl apply -f .github/manifests/deployment.yaml
+        run: kubectl apply --token /var/run/secrets/kubernetes.io/serviceaccount/token -f .github/manifests/deployment.yaml
