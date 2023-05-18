@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.opusmastery.org`)
+    - match: Host(`opusmastery.org`) && PathPrefix(`/api`)
       kind: Rule
       services:
         - name: opusmastery-api-service
