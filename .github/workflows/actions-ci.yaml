@@ -59,4 +59,4 @@ jobs:
         run: |
           kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/deployment.yaml
           kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/service.yaml
-          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/ingress.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/ingressroute.yaml
