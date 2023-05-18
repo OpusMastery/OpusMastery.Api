@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: opusmastery-api-ingressroute
+  namespace: opusmastery-api
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`opusmastery.org`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: opusmastery-api-service
+          port: 80
+  tls:
+    certResolver: letsencrypt
