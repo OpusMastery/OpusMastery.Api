@@ -1,9 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opusmastery-api
+  name: opusmastery-api-deployment
+  namespace: opusmastery-api
 spec:
-  replicas: 2
+  replicas: 3
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: opusmastery-api
@@ -13,7 +20,7 @@ spec:
         app: opusmastery-api
     spec:
       containers:
-        - name: opusmastery-api
-          image: zvesdochyot/opusmastery-api
+        - name: opusmastery-api-instance
+          image: {{DOCKER_REPOSITORY}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
           ports:
             - containerPort: 80
