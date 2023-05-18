@@ -45,13 +45,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
 
       - name: Deploy to K3s cluster
-        uses: Azure/k8s-deploy@v4.9
-        with:
-          action: deploy
-          manifests: |
-            .github/manifests/deployment.yaml
-            .github/manifests/ingress.yaml
-          strategy: canary
-          namespace: $GITHUB_WORKFLOW
-          images: $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
-          percentage: 50
+        run: kubectl apply -f .github/manifests/deployment.yaml
