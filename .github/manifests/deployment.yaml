@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opusmastery-api
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opusmastery-api-deployment
+  namespace: opusmastery-api
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: opusmastery-api
+  template:
+    metadata:
+      labels:
+        app: opusmastery-api
+    spec:
+      containers:
+        - name: opusmastery-api-instance
+          image: {{DOCKER_REPOSITORY}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP

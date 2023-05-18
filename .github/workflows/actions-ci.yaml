@@ -6,27 +6,57 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build & publish
     runs-on: self-hosted
     env:
       DOCKER_REPOSITORY_OWNER: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
       DOCKER_REPOSITORY_PASSWORD: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
     steps:
-    - name: Checkout existing code
-      uses: actions/checkout@v3
+      - name: Checkout existing code
+        uses: actions/checkout@v3
 
-    - name: Build & push Docker image to Docker Hub
-      run: |
-        docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
-        docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
-        docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
+      - name: Build Docker image
+        run: docker build ./OpusMastery/ --file ./OpusMastery/Dockerfile -t $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
-    - name: Kubernetes Set Context
-      uses: Azure/k8s-set-context@v3.0
-      with:
-       method: kubeconfig
-       kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker login -u $DOCKER_REPOSITORY_OWNER -p $DOCKER_REPOSITORY_PASSWORD
+          docker push $DOCKER_REPOSITORY_OWNER/$GITHUB_WORKFLOW:v$GITHUB_RUN_NUMBER
 
-    - name: Deploy to Kubernetes cluster
-      uses: Azure/k8s-deploy@v4.9
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Checkout existing code
+        uses: actions/checkout@v3
+
+      - name: Replace manifest tokens
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: '{{'
+          tokenSuffix: '}}'
+          files: '[".github/manifests/*.yaml"]'
+        env:
+          DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
+          IMAGE_NAME: ${{ github.workflow }}
+          IMAGE_TAG: v${{ github.run_number }}
+
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v3
+        with:
+           version: 'v1.26.4'
+
+      - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v3.0
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
+
+      - name: Deploy to K3s cluster
+        run: |
+          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/deployment.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/service.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/ingressroute.yaml
