@@ -7,10 +7,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`opusmastery.org`) && PathPrefix(`/api`)
+    - match: Host(`api.opusmastery.org`)
       kind: Rule
       services:
-        - name: opusmastery-api-service
+        - name: opusmastery-api
           port: 80
   tls:
     certResolver: letsencrypt
