@@ -45,4 +45,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
 
       - name: Deploy to K3s cluster
-        run: echo $KUBECONFIG
+        run: kubectl --kubeconfig=$KUBECONFIG get pods -A
