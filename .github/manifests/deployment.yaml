@@ -29,5 +29,7 @@ spec:
       containers:
         - name: opusmastery-api-instance
           image: {{DOCKER_REPOSITORY}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+              protocol: TCP
