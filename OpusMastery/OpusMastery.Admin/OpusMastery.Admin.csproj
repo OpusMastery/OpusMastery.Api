@@ -12,4 +12,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\OpusMastery.Domain\OpusMastery.Domain.csproj" />
+        <ProjectReference Include="..\OpusMastery.Middlewares\OpusMastery.Middlewares.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,3 +1,5 @@
+using OpusMastery.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +22,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<RequestHandlerMiddleware>();
 app.MapControllers();
 
 app.Run();
