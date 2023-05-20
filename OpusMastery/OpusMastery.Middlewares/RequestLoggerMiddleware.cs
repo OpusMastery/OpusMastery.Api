@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace OpusMastery.Middlewares;
 
-public class RequestHandlerMiddleware
+public class RequestLoggerMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<RequestHandlerMiddleware> _logger;
+    private readonly ILogger<RequestLoggerMiddleware> _logger;
 
-    public RequestHandlerMiddleware(RequestDelegate next, ILogger<RequestHandlerMiddleware> logger)
+    public RequestLoggerMiddleware(RequestDelegate next, ILogger<RequestLoggerMiddleware> logger)
     {
         _next = next;
         _logger = logger;
