@@ -38,7 +38,7 @@ jobs:
         with:
           tokenPrefix: '{{'
           tokenSuffix: '}}'
-          files: '[".github/manifests/*.yaml"]'
+          files: '["manifests/*.yaml"]'
         env:
           DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
           IMAGE_NAME: ${{ github.workflow }}
