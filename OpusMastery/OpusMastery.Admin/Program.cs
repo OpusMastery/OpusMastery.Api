@@ -1,28 +1,34 @@
+using OpusMastery.Di.Extensions;
 using OpusMastery.Middlewares;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args).AddConfigurationProviders();
 
-// Add services to the container.
+// Add services to the DI container
+var applicationSettings = builder.AddApplicationSettings();
 
+// Infrastructure dependencies
+builder.Services.AddDatabase(applicationSettings);
+
+// Core dependencies
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// Swagger dependencies
+//builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+WebApplication application = builder.Build();
 
-app.UseHttpsRedirection();
+// Configure the HTTP request pipeline
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
 
-app.UseAuthorization();
+application.UseHttpsRedirection();
+application.UseAuthorization();
 
-app.UseMiddleware<RequestHandlerMiddleware>();
-app.MapControllers();
+application.UseMiddleware<RequestLoggerMiddleware>();
+application.MapControllers();
 
-app.Run();
+application.Run();

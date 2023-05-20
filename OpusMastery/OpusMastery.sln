@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Domain", "OpusM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Middlewares", "OpusMastery.Middlewares\OpusMastery.Middlewares.csproj", "{D3DA4EC2-4653-4848-B35B-93C78F84B443}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Dal", "OpusMastery.Dal\OpusMastery.Dal.csproj", "{A3BA37F0-331B-4982-9F28-C39CEA95B322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Di.Extensions", "OpusMastery.Di.Extensions\OpusMastery.Di.Extensions.csproj", "{CB7231B9-EFBF-484E-8ADD-944FAD06C075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Configuration", "OpusMastery.Configuration\OpusMastery.Configuration.csproj", "{16202B07-FA4E-4733-BB07-5182749C238D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{D3DA4EC2-4653-4848-B35B-93C78F84B443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3DA4EC2-4653-4848-B35B-93C78F84B443}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3DA4EC2-4653-4848-B35B-93C78F84B443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3BA37F0-331B-4982-9F28-C39CEA95B322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3BA37F0-331B-4982-9F28-C39CEA95B322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3BA37F0-331B-4982-9F28-C39CEA95B322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3BA37F0-331B-4982-9F28-C39CEA95B322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB7231B9-EFBF-484E-8ADD-944FAD06C075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB7231B9-EFBF-484E-8ADD-944FAD06C075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB7231B9-EFBF-484E-8ADD-944FAD06C075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB7231B9-EFBF-484E-8ADD-944FAD06C075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16202B07-FA4E-4733-BB07-5182749C238D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16202B07-FA4E-4733-BB07-5182749C238D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16202B07-FA4E-4733-BB07-5182749C238D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16202B07-FA4E-4733-BB07-5182749C238D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
