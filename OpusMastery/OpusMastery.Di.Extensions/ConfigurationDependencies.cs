@@ -10,8 +10,9 @@ public static class ConfigurationDependencies
     public static WebApplicationBuilder AddConfigurationProviders(this WebApplicationBuilder builder)
     {
         builder.Configuration
+            .SetBasePath(builder.Environment.ContentRootPath)
             .AddEnvironmentVariables()
-            .AddJsonFile(string.Empty);
+            .AddJsonFile("", optional: false, reloadOnChange: true);
         
         return builder;
     }
@@ -20,8 +21,8 @@ public static class ConfigurationDependencies
     {
         ApplicationSettings applicationSettings = new();
         
-        builder.Configuration.Bind(ApplicationSettings.ApplicationSettingsKey, applicationSettings);
-        builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetRequiredSection(ApplicationSettings.ApplicationSettingsKey));
+        builder.Configuration.Bind(ApplicationSettings.Key, applicationSettings);
+        builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetRequiredSection(ApplicationSettings.Key));
         
         return applicationSettings;
     }

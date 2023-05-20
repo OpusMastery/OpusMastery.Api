@@ -1,3 +1,4 @@
+using OpusMastery.Admin.Extensions;
 using OpusMastery.Di.Extensions;
 using OpusMastery.Middlewares;
 
@@ -18,6 +19,8 @@ builder.Services.AddControllers();
 
 WebApplication application = builder.Build();
 
+await application.InitializeDatabaseAsync();
+
 // Configure the HTTP request pipeline
 // if (app.Environment.IsDevelopment())
 // {
@@ -31,4 +34,4 @@ application.UseAuthorization();
 application.UseMiddleware<RequestLoggerMiddleware>();
 application.MapControllers();
 
-application.Run();
+await application.RunAsync();
