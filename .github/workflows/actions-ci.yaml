@@ -57,6 +57,4 @@ jobs:
 
       - name: Deploy to K3s cluster
         run: |
-          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/deployment.yaml
-          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/service.yaml
-          kubectl --kubeconfig=$KUBECONFIG apply -f .github/manifests/ingressroute.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f manifests/
