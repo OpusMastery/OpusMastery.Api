@@ -26,3 +26,11 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
+          volumeMounts:
+            - name: appsettings
+              mountPath: /app
+              readOnly: true
+        volumes:
+          - name: appsettings
+            secret:
+              secretName: opusmastery-api-settings
