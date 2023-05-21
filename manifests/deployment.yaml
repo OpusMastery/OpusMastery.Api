@@ -28,7 +28,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: appsettings
-              mountPath: /app
+              mountPath: /app/secrets
               readOnly: true
       volumes:
         - name: appsettings
