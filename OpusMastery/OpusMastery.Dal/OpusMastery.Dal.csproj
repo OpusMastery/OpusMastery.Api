@@ -15,7 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\" />
+      <ProjectReference Include="..\OpusMastery.Domain\OpusMastery.Domain.csproj" />
+      <ProjectReference Include="..\OpusMastery.Extensions\OpusMastery.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

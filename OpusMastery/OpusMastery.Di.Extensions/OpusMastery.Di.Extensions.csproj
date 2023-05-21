@@ -11,8 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\OpusMastery.Application\OpusMastery.Application.csproj" />
       <ProjectReference Include="..\OpusMastery.Configuration\OpusMastery.Configuration.csproj" />
       <ProjectReference Include="..\OpusMastery.Dal\OpusMastery.Dal.csproj" />
+      <ProjectReference Include="..\OpusMastery.Domain\OpusMastery.Domain.csproj" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace OpusMastery.Dal.Models;
 
-public class Employee : AuditableEntityBase
+public class Employee : EntityBase
 {
     public Guid UserId { get; set; }
     public SystemUser User { get; set; } = null!;

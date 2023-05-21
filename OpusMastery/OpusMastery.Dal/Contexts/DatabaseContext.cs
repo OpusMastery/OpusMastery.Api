@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OpusMastery.Dal.Contexts.Interfaces;
 using OpusMastery.Dal.Models;
 using OpusMastery.Dal.Models.Abstractions;
@@ -26,6 +27,11 @@ public class DatabaseContext : DbContext, IDatabaseContext
         optionsBuilder.UseNpgsql(ConnectionString);
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<SystemUser>().HasIndex(user => user.Email).IsUnique();
+    }
+
     public Task InitializeDatabaseAsync(CancellationToken cancellationToken = default)
     {
         return Database.MigrateAsync(cancellationToken);
@@ -34,5 +40,24 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public new DbSet<TEntity> Set<TEntity>() where TEntity : EntityBase
     {
         return base.Set<TEntity>();
+    }
+
+    public new ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    {
+        entity.CreatedOn = DateTime.UtcNow;
+        return base.AddAsync(entity, cancellationToken);
+    }
+
+    public async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    {
+        foreach (TEntity entity in entities)
+        {
+            await AddAsync(entity, cancellationToken);
+        }
+    }
+
+    public Task<int> SaveAsync(CancellationToken cancellationToken = default)
+    {
+        return base.SaveChangesAsync(cancellationToken);
     }
 }
