@@ -12,7 +12,7 @@ public static class ConfigurationDependencies
         builder.Configuration
             .SetBasePath(builder.Environment.ContentRootPath)
             .AddEnvironmentVariables()
-            .AddJsonFile("appsettings.Kubernetes.json", optional: false, reloadOnChange: true);
+            .AddJsonFile("secrets/appsettings.Kubernetes.json", optional: false, reloadOnChange: true);
         
         return builder;
     }
