@@ -14,10 +14,9 @@ public class RequestLoggerMiddleware
         _logger = logger;
     }
 
-    public Task Invoke(HttpContext context)
+    public Task InvokeAsync(HttpContext context)
     {
-        _logger.LogInformation("Request host: {Host}", context.Request.Host.ToString());
-        _logger.LogInformation("Request path: {Path}", context.Request.Path.ToString());
+        _logger.LogInformation("Request host: {Host}, path: {Path}", context.Request.Host, context.Request.Path);
         return _next(context);
     }
 }
