@@ -30,7 +30,7 @@ spec:
             - name: appsettings
               mountPath: /app
               readOnly: true
-        volumes:
-          - name: appsettings
-            secret:
-              secretName: opusmastery-api-settings
+      volumes:
+        - name: appsettings
+          secret:
+            secretName: opusmastery-api-settings
