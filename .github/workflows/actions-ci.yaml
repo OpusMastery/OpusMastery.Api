@@ -40,6 +40,7 @@ jobs:
           tokenSuffix: '}}'
           files: '["manifests/*.yaml"]'
         env:
+          APPLICATION_SETTINGS_VALUE: ${{ secrets.APPLICATION_SETTINGS_VALUE }}
           DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY_OWNER }}
           IMAGE_NAME: ${{ github.workflow }}
           IMAGE_TAG: v${{ github.run_number }}
