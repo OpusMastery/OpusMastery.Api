@@ -11,7 +11,7 @@ public static class Converter
         return new SystemUser
         {
             Email = demoUser.Email,
-            Password = demoUser.Password,
+            Password = demoUser.Password.ToSha512(),
             FirstName = demoUser.FirstName,
             LastName = demoUser.LastName,
             Status = demoUser.Status.ToEnumName(),
