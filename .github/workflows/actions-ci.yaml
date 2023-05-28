@@ -57,5 +57,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG_VALUE }}
 
       - name: Deploy to K3s cluster
-        run: |
-          kubectl --kubeconfig=$KUBECONFIG apply -f manifests/
+        run: kubectl --kubeconfig=$KUBECONFIG apply -f manifests/
