@@ -25,10 +25,7 @@ public class IdentityRepository : IIdentityRepository
     public async Task<Guid> SaveNewUserAsync(DemoUser demoUser)
     {
         var systemUser = demoUser.ToDal();
-        
-        await _databaseContext.AddAsync(systemUser);
-        await _databaseContext.SaveAsync();
-        
+        await _databaseContext.SaveNewAsync(systemUser);
         return systemUser.Id;
     }
 }

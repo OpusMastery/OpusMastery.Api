@@ -7,18 +7,20 @@ public class DemoUser
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public UserStatus Status { get; private set; }
+    public Guid RoleId { get; private set; }
 
-    private DemoUser(string email, string password, string firstName, string lastName, UserStatus status)
+    private DemoUser(string email, string password, string firstName, string lastName, UserStatus status, Guid roleId)
     {
         Email = email;
         Password = password;
         FirstName = firstName;
         LastName = lastName;
         Status = status;
+        RoleId = roleId;
     }
 
     public static DemoUser CreateNew(string email, string password, string firstName, string lastName)
     {
-        return new DemoUser(email, password, firstName, lastName, UserStatus.NewlyCreated);
+        return new DemoUser(email, password, firstName, lastName, UserStatus.NewlyCreated, DomainConstants.UserRole.DashboardUser);
     }
 }

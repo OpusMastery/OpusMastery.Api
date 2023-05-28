@@ -11,9 +11,11 @@ public static class Converter
         return new SystemUser
         {
             Email = demoUser.Email,
+            Password = demoUser.Password,
             FirstName = demoUser.FirstName,
             LastName = demoUser.LastName,
-            Status = demoUser.Status.ToEnumName()
+            Status = demoUser.Status.ToEnumName(),
+            RoleId = demoUser.RoleId
         };
     }
 }

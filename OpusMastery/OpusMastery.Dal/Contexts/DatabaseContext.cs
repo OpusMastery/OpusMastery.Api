@@ -49,6 +49,12 @@ public class DatabaseContext : DbContext, IDatabaseContext
         return base.AddAsync(entity, cancellationToken);
     }
 
+    public async Task<int> SaveNewAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    {
+        await AddAsync(entity, cancellationToken);
+        return await SaveAsync(cancellationToken);
+    }
+
     public async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase
     {
         foreach (TEntity entity in entities)

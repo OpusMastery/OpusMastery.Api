@@ -1,6 +1,7 @@
 ﻿using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 using OpusMastery.Exceptions.Identity;
+using OpusMastery.Extensions;
 
 namespace OpusMastery.Application.Services.Identity;
 
@@ -15,12 +16,8 @@ public class IdentityService : IIdentityService
 
     public async Task<Guid> RegisterUserAsync(DemoUser demoUser)
     {
-        bool isExistingUser = await _identityRepository.IsUserExistsByEmailAsync(demoUser.Email);
-
-        if (isExistingUser)
-        {
-            throw new UserAlreadyExistsException($"The user with email: {demoUser.Email} has already been registered");
-        }
+        (await _identityRepository.IsUserExistsByEmailAsync(demoUser.Email))
+            .ThrowIfTrue(() => new UserAlreadyExistsException($"The user with email: {demoUser.Email} has been already registered"));
 
         return await _identityRepository.SaveNewUserAsync(demoUser);
     }

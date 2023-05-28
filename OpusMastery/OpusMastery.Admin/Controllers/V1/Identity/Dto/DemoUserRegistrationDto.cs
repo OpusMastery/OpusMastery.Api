@@ -5,14 +5,14 @@ namespace OpusMastery.Admin.Controllers.V1.Identity.Dto;
 public class DemoUserRegistrationDto
 {
     [Required(AllowEmptyStrings = false)]
-    public string Email { get; set; } = null!;
+    public required string Email { get; set; }
 
     [Required(AllowEmptyStrings = false)]
-    public string Password { get; set; } = null!;
+    public required string Password { get; set; }
 
     [Required(AllowEmptyStrings = false)]
-    public string FirstName { get; set; } = null!;
+    public required string FirstName { get; set; }
 
     [Required(AllowEmptyStrings = false)]
-    public string LastName { get; set; } = null!;
+    public required string LastName { get; set; }
 }
