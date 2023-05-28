@@ -15,6 +15,7 @@
       <ProjectReference Include="..\OpusMastery.Configuration\OpusMastery.Configuration.csproj" />
       <ProjectReference Include="..\OpusMastery.Dal\OpusMastery.Dal.csproj" />
       <ProjectReference Include="..\OpusMastery.Domain\OpusMastery.Domain.csproj" />
+      <ProjectReference Include="..\OpusMastery.Middlewares\OpusMastery.Middlewares.csproj" />
     </ItemGroup>
 
 </Project>

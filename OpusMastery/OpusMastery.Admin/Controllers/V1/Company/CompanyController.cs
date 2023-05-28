@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using OpusMastery.Admin.Controllers.V1.Authorization.Dto;
-using OpusMastery.Admin.Controllers.V1.Company.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
 using OpusMastery.Domain.Company.Interfaces;
 
 namespace OpusMastery.Admin.Controllers.V1.Company;
@@ -18,9 +15,8 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPost("demo")]
-    public async Task<IActionResult> CreateDemoCompany([FromBody, Required] DemoUserDto demoUserDto)
+    public async Task<IActionResult> CreateDemoCompany()
     {
-        await _companyService.CreateDemoCompanyAsync(demoUserDto.ToDomain());
         return Ok();
     }
 }

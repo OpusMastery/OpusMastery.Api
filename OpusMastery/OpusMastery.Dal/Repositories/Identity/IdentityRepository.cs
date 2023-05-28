@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpusMastery.Dal.Contexts.Interfaces;
 using OpusMastery.Dal.Models;
-using OpusMastery.Domain.Authorization;
-using OpusMastery.Domain.Authorization.Interfaces;
+using OpusMastery.Domain.Identity;
+using OpusMastery.Domain.Identity.Interfaces;
 
-namespace OpusMastery.Dal.Repositories.Authorization;
+namespace OpusMastery.Dal.Repositories.Identity;
 
-public class AuthorizationRepository : IAuthorizationRepository
+public class IdentityRepository : IIdentityRepository
 {
     private readonly IDatabaseContext _databaseContext;
 
-    public AuthorizationRepository(IDatabaseContext databaseContext)
+    public IdentityRepository(IDatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
     }
@@ -22,9 +22,9 @@ public class AuthorizationRepository : IAuthorizationRepository
             .FirstOrDefaultAsync(user => user.Email == email) is not null;
     }
 
-    public async Task<Guid> SaveNewUserAsync(User user)
+    public async Task<Guid> SaveNewUserAsync(DemoUser demoUser)
     {
-        var systemUser = user.ToDal();
+        var systemUser = demoUser.ToDal();
         
         await _databaseContext.AddAsync(systemUser);
         await _databaseContext.SaveAsync();

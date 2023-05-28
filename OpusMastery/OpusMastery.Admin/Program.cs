@@ -1,17 +1,20 @@
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using OpusMastery.Admin.Extensions;
 using OpusMastery.Di.Extensions;
 using OpusMastery.Middlewares;
 
-var builder = WebApplication.CreateBuilder(args).AddConfigurationProviders();
+var builder = WebApplication.CreateBuilder(args);
 
 // Add environmental configuration to the DI container
-var applicationSettings = builder.AddApplicationSettings();
+var applicationSettings = builder
+    .AddConfigurationProviders()
+    .AddApplicationSettings();
 
 // Infrastructure dependencies
 builder.Services.AddDatabase(applicationSettings);
 
 // Core dependencies
-builder.Services.AddControllers();
+builder.Services.AddControllersWithFilters();
 
 // Business dependencies
 builder.Services.AddBusinessServices();

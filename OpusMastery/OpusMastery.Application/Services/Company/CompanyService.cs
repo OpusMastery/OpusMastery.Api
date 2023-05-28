@@ -1,12 +1,10 @@
-﻿using OpusMastery.Domain.Authorization;
-using OpusMastery.Domain.Company;
-using OpusMastery.Domain.Company.Interfaces;
+﻿using OpusMastery.Domain.Company.Interfaces;
 
 namespace OpusMastery.Application.Services.Company;
 
 public class CompanyService : ICompanyService
 {
-    public Task CreateDemoCompanyAsync(User user)
+    public Task CreateDemoCompanyAsync()
     {
         throw new NotImplementedException();
     }

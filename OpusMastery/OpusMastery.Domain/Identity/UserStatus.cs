@@ -1,4 +1,4 @@
-﻿namespace OpusMastery.Domain.Authorization;
+﻿namespace OpusMastery.Domain.Identity;
 
 public enum UserStatus
 {
