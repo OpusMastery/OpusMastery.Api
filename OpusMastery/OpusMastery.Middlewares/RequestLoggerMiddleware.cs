@@ -3,20 +3,18 @@ using Microsoft.Extensions.Logging;
 
 namespace OpusMastery.Middlewares;
 
-public class RequestLoggerMiddleware
+public class RequestLoggerMiddleware : IMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<RequestLoggerMiddleware> _logger;
 
-    public RequestLoggerMiddleware(RequestDelegate next, ILogger<RequestLoggerMiddleware> logger)
+    public RequestLoggerMiddleware(ILogger<RequestLoggerMiddleware> logger)
     {
-        _next = next;
         _logger = logger;
     }
 
-    public Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         _logger.LogInformation("Request host: {Host}, path: {Path}", context.Request.Host, context.Request.Path);
-        return _next(context);
+        await next(context);
     }
 }

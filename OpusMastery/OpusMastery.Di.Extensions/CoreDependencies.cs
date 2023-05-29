@@ -11,4 +11,11 @@ public static class CoreDependencies
         return serviceCollection
             .AddControllers(options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()))).Services;
     }
+
+    public static IServiceCollection AddMiddlewares(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection
+            .AddScoped<RequestLoggerMiddleware>()
+            .AddScoped<IdentityMiddleware>();
+    }
 }

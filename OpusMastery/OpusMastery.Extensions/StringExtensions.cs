@@ -19,4 +19,9 @@ public static class StringExtensions
     {
         return new string(bytes.SelectMany(b => b.ToString(toUpperCase ? "X2" : "x2")).ToArray());
     }
+
+    public static Guid? ToGuidOrDefault(this string? value)
+    {
+        return Guid.TryParse(value, out Guid result) ? result : null;
+    }
 }

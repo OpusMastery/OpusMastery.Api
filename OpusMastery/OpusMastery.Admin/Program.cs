@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using OpusMastery.Admin.Extensions;
 using OpusMastery.Di.Extensions;
-using OpusMastery.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +12,9 @@ var applicationSettings = builder
 builder.Services.AddDatabase(applicationSettings);
 
 // Core dependencies
-builder.Services.AddControllersWithFilters();
+builder.Services
+    .AddControllersWithFilters()
+    .AddMiddlewares();
 
 // Business dependencies
 builder.Services.AddBusinessServices();
@@ -37,7 +37,7 @@ await application.InitializeDatabaseAsync();
 application.UseHttpsRedirection();
 application.UseAuthorization();
 
-application.UseMiddleware<RequestLoggerMiddleware>();
+application.UseMiddlewares();
 application.MapControllers();
 
 await application.RunAsync();
