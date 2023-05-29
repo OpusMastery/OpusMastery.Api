@@ -1,4 +1,4 @@
-﻿using OpusMastery.Dal.Models;
+﻿using OpusMastery.Dal.Models.Identity;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Extensions;
 

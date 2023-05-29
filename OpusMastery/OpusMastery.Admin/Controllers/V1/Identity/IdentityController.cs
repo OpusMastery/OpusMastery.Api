@@ -6,6 +6,7 @@ using OpusMastery.Domain.Identity.Interfaces;
 namespace OpusMastery.Admin.Controllers.V1.Identity;
 
 [ApiController]
+[Produces("application/json")]
 [Route("api/v1/[controller]")]
 public class IdentityController : ControllerBase
 {

@@ -1,6 +1,6 @@
 ﻿using OpusMastery.Dal.Models.Abstractions;
 
-namespace OpusMastery.Dal.Models;
+namespace OpusMastery.Dal.Models.Identity;
 
 public class SystemUser : EntityBase
 {

@@ -1,15 +1,16 @@
 ﻿using OpusMastery.Dal.Models.Abstractions;
+using OpusMastery.Dal.Models.Identity;
 
 namespace OpusMastery.Dal.Models;
 
 public class Employee : EntityBase
 {
-    public Guid UserId { get; set; }
+    public required Guid UserId { get; set; }
     public SystemUser User { get; set; } = null!;
 
-    public Guid CompanyId { get; set; }
+    public required Guid CompanyId { get; set; }
     public Company Company { get; set; } = null!;
 
-    public Guid RoleId { get; set; }
+    public required Guid RoleId { get; set; }
     public EmployeeRole Role { get; set; } = null!;
 }

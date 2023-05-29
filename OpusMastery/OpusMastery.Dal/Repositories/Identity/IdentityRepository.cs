@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpusMastery.Dal.Contexts.Interfaces;
-using OpusMastery.Dal.Models;
+using OpusMastery.Dal.Models.Identity;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 
