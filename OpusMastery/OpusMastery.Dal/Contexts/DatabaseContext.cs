@@ -18,7 +18,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     public DbSet<SystemUser>? Users { get; set; }
     public DbSet<SystemUserRole>? UserRoles { get; set; }
-    public DbSet<SystemUserEntityRight>? UserEntityRights { get; set; }
+    public DbSet<SystemUserRoleEntityRights>? UserRoleEntityRights { get; set; }
     public DbSet<Employee>? Employees { get; set; }
     public DbSet<EmployeeRole>? EmployeeRoles { get; set; }
     public DbSet<Company>? Companies { get; set; }
@@ -89,14 +89,14 @@ public class DatabaseContext : DbContext, IDatabaseContext
             return;
         }
 
-        List<SystemUserEntityRight> userEntityRights = await Set<SystemUserEntityRight>()
+        List<SystemUserRoleEntityRights> entityRights = await Set<SystemUserRoleEntityRights>()
             .AsNoTracking()
             .Where(entityRight => entityRight.RoleId == roleId)
             .ToListAsync();
 
         foreach (EntityEntry entityEntry in ChangeTracker.Entries())
         {
-            if (!HasRequiredEntityRight(entityEntry, userEntityRights))
+            if (!HasRequiredEntityRight(entityEntry, entityRights))
             {
                 throw new InsufficientAccessRightsException(
                     $"The user with userId: {CurrentContextIdentity.User.Id} does not have access to the resource with the state {entityEntry.State}");
@@ -109,18 +109,18 @@ public class DatabaseContext : DbContext, IDatabaseContext
         return (await Set<SystemUser>().AsNoTracking().FirstOrDefaultAsync(user => user.Id == CurrentContextIdentity.User.Id))?.RoleId;
     }
 
-    private static bool HasRequiredEntityRight(EntityEntry entityEntry, IEnumerable<SystemUserEntityRight> userEntityRights)
+    private static bool HasRequiredEntityRight(EntityEntry entityEntry, IEnumerable<SystemUserRoleEntityRights> entityRights)
     {
         return entityEntry.State switch
         {
-            EntityState.Added => userEntityRights.Any(entityRight => entityRight.CanAdd && CheckEntityNameExistence(entityRight)),
-            EntityState.Modified => userEntityRights.Any(entityRight => entityRight.CanModify && CheckEntityNameExistence(entityRight)),
-            EntityState.Deleted => userEntityRights.Any(entityRight => entityRight.CanDelete && CheckEntityNameExistence(entityRight)),
+            EntityState.Added => entityRights.Any(entityRight => entityRight.CanAdd && CheckEntityNameExistence(entityRight)),
+            EntityState.Modified => entityRights.Any(entityRight => entityRight.CanModify && CheckEntityNameExistence(entityRight)),
+            EntityState.Deleted => entityRights.Any(entityRight => entityRight.CanDelete && CheckEntityNameExistence(entityRight)),
             EntityState.Detached or EntityState.Unchanged => true,
             _ => throw new InvalidEnumArgumentException(nameof(entityEntry.State), entityEntry.State.ToInt32(), typeof(EntityState))
         };
 
-        bool CheckEntityNameExistence(SystemUserEntityRight entityRight)
+        bool CheckEntityNameExistence(SystemUserRoleEntityRights entityRight)
         {
             return entityRight.EntityName == entityEntry.Entity.GetType().Name || entityRight.EntityName is DomainConstants.EntityRight.FullAccess;
         }

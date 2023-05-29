@@ -2,7 +2,7 @@
 
 namespace OpusMastery.Dal.Models.Identity;
 
-public class SystemUserEntityRight : EntityBase
+public class SystemUserRoleEntityRights : EntityBase
 {
     public required Guid RoleId { get; set; }
     public SystemUserRole Role { get; set; } = null!;
