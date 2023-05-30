@@ -16,9 +16,9 @@ public class ClaimService : IClaimService
     private readonly JwtSettings _jwtSettings;
     private readonly IIdentityRepository _identityRepository;
 
-    public ClaimService(IOptions<JwtSettings> jwtSettings, IIdentityRepository identityRepository)
+    public ClaimService(IOptions<ApplicationSettings> applicationSettings, IIdentityRepository identityRepository)
     {
-        _jwtSettings = jwtSettings.Value;
+        _jwtSettings = applicationSettings.Value.JwtSettings;
         _identityRepository = identityRepository;
     }
 

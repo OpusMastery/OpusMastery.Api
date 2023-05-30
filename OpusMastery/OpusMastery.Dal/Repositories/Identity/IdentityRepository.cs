@@ -39,8 +39,9 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<string> UpdateUserRefreshTokensAsync(User user)
     {
-        await RemoveAllRefreshTokens(user.Id);
-        return await SetNewRefreshTokenAsync(user);
+        var systemUser = await _databaseContext.Set<SystemUser>().FirstAsync(systemUser => systemUser.Id == user.Id);
+        await RemoveAllRefreshTokens(systemUser);
+        return await SetNewRefreshTokenAsync(systemUser, user.RefreshToken!);
     }
 
     public async Task<Guid> SaveNewUserAsync(User user)
@@ -58,20 +59,24 @@ public class IdentityRepository : IIdentityRepository
             .Include(x => x.RefreshToken);
     }
 
-    private Task RemoveAllRefreshTokens(Guid userId)
+    private async Task RemoveAllRefreshTokens(SystemUser user)
     {
-        return _databaseContext.Set<SystemUserRefreshToken>().Where(refreshToken => refreshToken.UserId == userId).ExecuteDeleteAsync();
+        List<SystemUserRefreshToken> refreshTokens = await _databaseContext.Set<SystemUserRefreshToken>()
+            .Where(refreshToken => refreshToken.UserId == user.Id)
+            .ToListAsync();
+
+        user.RefreshTokenId = null;
+        await _databaseContext.SaveRemovedAsync(refreshTokens);
     }
 
-    private async Task<string> SetNewRefreshTokenAsync(User user)
+    private async Task<string> SetNewRefreshTokenAsync(SystemUser user, UserRefreshToken refreshToken)
     {
-        var systemUser = await _databaseContext.Set<SystemUser>().FirstAsync(systemUser => systemUser.Id == user.Id);
-        var userRefreshToken = user.RefreshToken!.ToDal();
+        var userRefreshToken = refreshToken.ToDal();
 
         await _databaseContext.AddAsync(userRefreshToken);
-        systemUser.RefreshTokenId = userRefreshToken.Id;
+        user.RefreshTokenId = userRefreshToken.Id;
 
-        await _databaseContext.SaveUpdatedAsync(systemUser);
+        await _databaseContext.SaveUpdatedAsync(user);
         return user.RefreshToken!.Value;
     }
 }

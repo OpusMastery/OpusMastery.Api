@@ -84,6 +84,17 @@ public class DatabaseContext : DbContext, IDatabaseContext
         return SaveAsync(cancellationToken);
     }
 
+    public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : EntityBase
+    {
+        base.RemoveRange(entities);
+    }
+
+    public Task SaveRemovedAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    {
+        base.RemoveRange(entities);
+        return SaveAsync(cancellationToken);
+    }
+
     public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
     {
         await HandleSavingChangesAsync(CurrentContextIdentity.User.Id);

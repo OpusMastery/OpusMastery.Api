@@ -13,5 +13,7 @@ public interface IDatabaseContext : IAsyncDisposable
     public Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase;
     public EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : EntityBase;
     public Task SaveUpdatedAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase;
+    public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : EntityBase;
+    public Task SaveRemovedAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase;
     public Task<int> SaveAsync(CancellationToken cancellationToken = default);
 }
