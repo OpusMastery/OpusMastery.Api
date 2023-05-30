@@ -5,6 +5,14 @@ namespace OpusMastery.Extensions;
 
 public static class StringExtensions
 {
+    public static string GenerateRandomHexString(int bufferSize)
+    {
+        byte[] buffer = new byte[bufferSize];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(buffer);
+        return buffer.ToHexString();
+    }
+
     public static string ToSha512(this string value)
     {
         return SHA512.HashData(value.ToByteArray()).ToHexString();

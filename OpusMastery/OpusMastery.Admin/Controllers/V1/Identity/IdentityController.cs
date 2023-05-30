@@ -24,16 +24,15 @@ public class IdentityController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody, Required] LoginFormDto loginFormDto)
+    public async Task<ActionResult<JsonWebTokenDto>> Login([FromBody, Required] LoginFormDto loginFormDto)
     {
-        await _identityService.LoginUserAsync(loginFormDto.ToDomain());
-        return Ok();
+        var jsonWebToken = await _identityService.LoginUserAsync(loginFormDto.ToDomain());
+        return Ok(jsonWebToken.ToDto());
     }
 
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken([FromBody, Required] RefreshTokenDto refreshTokenDto)
     {
-        // await _identityService.RefreshUserAuthorizationAsync(refreshTokenDto.ToDomain());
         return Ok();
     }
 }

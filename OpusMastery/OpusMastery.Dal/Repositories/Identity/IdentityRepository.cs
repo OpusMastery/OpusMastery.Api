@@ -37,7 +37,7 @@ public class IdentityRepository : IIdentityRepository
         return systemUser?.ToDomain();
     }
 
-    public async Task<string> UpdateUserRefreshTokenAsync(User user)
+    public async Task<string> UpdateUserRefreshTokensAsync(User user)
     {
         await RemoveAllRefreshTokens(user.Id);
         return await SetNewRefreshTokenAsync(user);

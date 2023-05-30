@@ -34,6 +34,11 @@ public class User
         Role = role;
     }
 
+    public void GenerateNewRefreshToken(int tokenSize, DateTime expiresOn)
+    {
+        RefreshToken = UserRefreshToken.CreateNew(Id, tokenSize, expiresOn);
+    }
+
     public static User CreateNew(string email, string password, string firstName, string lastName)
     {
         return new User(Guid.NewGuid(), email, password, firstName, lastName, UserStatus.NewlyCreated);

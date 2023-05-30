@@ -1,4 +1,6 @@
-﻿namespace OpusMastery.Domain.Identity;
+﻿using OpusMastery.Extensions;
+
+namespace OpusMastery.Domain.Identity;
 
 public class UserRefreshToken
 {
@@ -11,6 +13,11 @@ public class UserRefreshToken
         UserId = userId;
         Value = value;
         ExpiresOn = expiresOn;
+    }
+
+    public static UserRefreshToken CreateNew(Guid userId, int tokenSize, DateTime expiresOn)
+    {
+        return new UserRefreshToken(userId, value: StringExtensions.GenerateRandomHexString(tokenSize), expiresOn);
     }
 
     public static UserRefreshToken Create(Guid userId, string value, DateTime expiresOn)

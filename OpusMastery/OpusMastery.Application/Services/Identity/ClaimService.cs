@@ -14,10 +14,12 @@ namespace OpusMastery.Application.Services.Identity;
 public class ClaimService : IClaimService
 {
     private readonly JwtSettings _jwtSettings;
+    private readonly IIdentityRepository _identityRepository;
 
-    public ClaimService(IOptions<JwtSettings> jwtSettings)
+    public ClaimService(IOptions<JwtSettings> jwtSettings, IIdentityRepository identityRepository)
     {
         _jwtSettings = jwtSettings.Value;
+        _identityRepository = identityRepository;
     }
 
     public ClaimsIdentity CreateIdentity(User user)
@@ -37,14 +39,20 @@ public class ClaimService : IClaimService
             ClaimsIdentity.DefaultRoleClaimType);
     }
 
+    public Task<string> GenerateNewRefreshTokenAsync(User user)
+    {
+        user.GenerateNewRefreshToken(_jwtSettings.RefreshTokenLength, _jwtSettings.RefreshTokenValidUntil);
+        return _identityRepository.UpdateUserRefreshTokensAsync(user);
+    }
+
     public JsonWebToken AuthenticateUser(ClaimsIdentity claimsIdentity, string refreshToken)
     {
         var jwtSecurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claimsIdentity.Claims,
-            notBefore: _jwtSettings.NotValidBefore,
-            expires: _jwtSettings.ValidUntil,
+            notBefore: _jwtSettings.AccessTokenNotValidBefore,
+            expires: _jwtSettings.AccessTokenValidUntil,
             signingCredentials: GetJwtSignature(_jwtSettings.SecretKey));
 
         string encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);

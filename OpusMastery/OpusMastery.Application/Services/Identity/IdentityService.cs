@@ -37,7 +37,7 @@ public class IdentityService : IIdentityService
         }
 
         ClaimsIdentity claimsIdentity = _claimService.CreateIdentity(user);
-        string refreshToken = await _identityRepository.UpdateUserRefreshTokenAsync(user);
+        string refreshToken = await _claimService.GenerateNewRefreshTokenAsync(user);
         return _claimService.AuthenticateUser(claimsIdentity, refreshToken);
     }
 

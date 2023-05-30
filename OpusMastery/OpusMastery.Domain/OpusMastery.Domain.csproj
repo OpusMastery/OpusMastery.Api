@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\OpusMastery.Extensions\OpusMastery.Extensions.csproj" />
+    </ItemGroup>
+
 </Project>
