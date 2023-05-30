@@ -19,22 +19,20 @@ builder.Services
 // Business dependencies
 builder.Services.AddBusinessServices();
 
-// Swagger dependencies
-//builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
 WebApplication application = builder.Build();
 
 await application.InitializeDatabaseAsync();
 
-// Configure the HTTP request pipeline
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
+if (application.Environment.IsDevelopment())
+{
+    application.UseHttpsRedirection();
+    // application.UseSwagger();
+    // application.UseSwaggerUI();
+}
 
-application.UseHttpsRedirection();
 application.UseAuthorization();
 
 application.UseMiddlewares();

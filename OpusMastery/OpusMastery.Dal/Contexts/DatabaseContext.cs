@@ -28,7 +28,6 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DatabaseContext(ContextOptions contextOptions)
     {
         ConnectionString = contextOptions.ConnectionString;
-        SavingChanges += HandleSavingChangesEvent;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -71,42 +70,33 @@ public class DatabaseContext : DbContext, IDatabaseContext
         }
     }
 
-    public Task<int> SaveAsync(CancellationToken cancellationToken = default)
+    public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
     {
-        return base.SaveChangesAsync(cancellationToken);
+        await HandleSavingChangesAsync(CurrentContextIdentity.User.Id);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
-    private async void HandleSavingChangesEvent(object? sender, SavingChangesEventArgs @event)
+    private async Task HandleSavingChangesAsync(Guid? userId)
     {
-        await OnSavingChangesAsync();
-    }
+        var systemUser = await Set<SystemUser>().AsNoTracking().FirstOrDefaultAsync(user => user.Id == userId);
 
-    private async Task OnSavingChangesAsync()
-    {
-        Guid? roleId = await GetCurrentUserRoleAsync();
-        if (roleId is null)
+        if (systemUser?.RoleId is null)
         {
             return;
         }
 
         List<SystemUserRoleEntityRights> entityRights = await Set<SystemUserRoleEntityRights>()
             .AsNoTracking()
-            .Where(entityRight => entityRight.RoleId == roleId)
+            .Where(entityRight => entityRight.RoleId == systemUser.RoleId)
             .ToListAsync();
 
         foreach (EntityEntry entityEntry in ChangeTracker.Entries())
         {
             if (!HasRequiredEntityRight(entityEntry, entityRights))
             {
-                throw new InsufficientAccessRightsException(
-                    $"The user with userId: {CurrentContextIdentity.User.Id} does not have access to the resource with the state {entityEntry.State}");
+                throw new InsufficientAccessRightsException($"The user with userId: {userId} does not have access to the resource with the state {entityEntry.State}");
             }
         }
-    }
-
-    private async Task<Guid?> GetCurrentUserRoleAsync()
-    {
-        return (await Set<SystemUser>().AsNoTracking().FirstOrDefaultAsync(user => user.Id == CurrentContextIdentity.User.Id))?.RoleId;
     }
 
     private static bool HasRequiredEntityRight(EntityEntry entityEntry, IEnumerable<SystemUserRoleEntityRights> entityRights)

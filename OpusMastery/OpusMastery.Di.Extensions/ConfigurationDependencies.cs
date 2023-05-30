@@ -12,18 +12,18 @@ public static class ConfigurationDependencies
         builder.Configuration
             .SetBasePath(builder.Environment.ContentRootPath)
             .AddEnvironmentVariables()
-            .AddJsonFile("secrets/appsettings.Kubernetes.json", optional: false, reloadOnChange: true);
-        
+            .AddJsonFile("secrets/appsettings.Kubernetes.json", optional: true, reloadOnChange: true);
+
         return builder;
     }
 
     public static ApplicationSettings AddApplicationSettings(this WebApplicationBuilder builder)
     {
         ApplicationSettings applicationSettings = new();
-        
+
         builder.Configuration.Bind(ApplicationSettings.Key, applicationSettings);
         builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetRequiredSection(ApplicationSettings.Key));
-        
+
         return applicationSettings;
     }
 }

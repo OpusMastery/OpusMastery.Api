@@ -9,8 +9,9 @@ public class IdentityMiddleware : IMiddleware
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         string? userId = context.User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+        var userIdentifier = UserIdentifier.Create(userId.ToGuidOrDefault());
 
-        using (CurrentContextIdentity.SetIdentifier(UserIdentifier.Create(userId.ToGuidOrDefault())))
+        using (CurrentContextIdentity.SetIdentifier(userIdentifier))
         {
             await next(context);
         }
