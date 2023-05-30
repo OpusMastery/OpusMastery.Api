@@ -42,9 +42,9 @@ public class DatabaseContext : DbContext, IDatabaseContext
         modelBuilder.Entity<SystemUser>().HasIndex(user => user.Email).IsUnique();
 
         modelBuilder.Entity<SystemUser>()
-            .HasOne(systemUser => systemUser.RefreshToken)
+            .HasOne<SystemUserRefreshToken>(systemUser => systemUser.RefreshToken)
             .WithOne(refreshToken => refreshToken.User)
-            .HasForeignKey<SystemUserRefreshToken>(refreshToken => refreshToken.UserId);
+            .HasForeignKey<SystemUser>(systemUser => systemUser.RefreshTokenId);
     }
 
     public Task InitializeDatabaseAsync(CancellationToken cancellationToken = default)

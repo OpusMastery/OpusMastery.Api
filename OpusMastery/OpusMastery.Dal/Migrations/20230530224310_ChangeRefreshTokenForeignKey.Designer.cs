@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OpusMastery.Dal.Contexts;
@@ -11,9 +12,11 @@ using OpusMastery.Dal.Contexts;
 namespace OpusMastery.Dal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230530224310_ChangeRefreshTokenForeignKey")]
+    partial class ChangeRefreshTokenForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,9 +158,6 @@ namespace OpusMastery.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("RefreshTokenId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
@@ -168,9 +168,6 @@ namespace OpusMastery.Dal.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("RefreshTokenId")
                         .IsUnique();
 
                     b.HasIndex("RoleId");
@@ -186,9 +183,6 @@ namespace OpusMastery.Dal.Migrations
 
                     b.Property<DateTime>("ExpiresOn")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -307,17 +301,11 @@ namespace OpusMastery.Dal.Migrations
 
             modelBuilder.Entity("OpusMastery.Dal.Models.Identity.SystemUser", b =>
                 {
-                    b.HasOne("OpusMastery.Dal.Models.Identity.SystemUserRefreshToken", "RefreshToken")
-                        .WithOne("User")
-                        .HasForeignKey("OpusMastery.Dal.Models.Identity.SystemUser", "RefreshTokenId");
-
                     b.HasOne("OpusMastery.Dal.Models.Identity.SystemUserRole", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("RefreshToken");
 
                     b.Navigation("Role");
                 });
@@ -352,12 +340,6 @@ namespace OpusMastery.Dal.Migrations
             modelBuilder.Entity("OpusMastery.Dal.Models.EmployeeRole", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("OpusMastery.Dal.Models.Identity.SystemUserRefreshToken", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("OpusMastery.Dal.Models.Identity.SystemUserRole", b =>
