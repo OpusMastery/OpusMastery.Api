@@ -1,6 +1,6 @@
 ﻿namespace OpusMastery.Admin.Controllers.V1.Identity.Dto;
 
-public class RefreshTokenDto
+public class RefreshAccessTokenDto
 {
     
 }
