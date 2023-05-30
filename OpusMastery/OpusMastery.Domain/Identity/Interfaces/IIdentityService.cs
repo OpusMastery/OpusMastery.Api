@@ -2,5 +2,7 @@
 
 public interface IIdentityService
 {
-    public Task<Guid> RegisterUserAsync(DemoUser demoUser);
+    public Task<Guid> RegisterUserAsync(User user);
+    public Task<JsonWebToken> LoginUserAsync(UserCredentials credentials);
+    public Task RefreshUserAuthorizationAsync();
 }

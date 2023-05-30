@@ -3,8 +3,15 @@ using OpusMastery.Dal.Models.Identity;
 
 namespace OpusMastery.Dal.Models;
 
-public class Company : LookupEntityBase
+public class Company : EntityBase, IAuditableEntity, INameableEntity
 {
+    public DateTime? CreatedOn { get; set; }
+    public Guid? CreatedBy { get; set; }
+    public DateTime? ModifiedOn { get; set; }
+    public Guid? ModifiedBy { get; set; }
+
+    public required string Name { get; set; }
+
     public required string Email { get; set; }
     public required string Status { get; set; }
     public string? PhoneNumber { get; set; }

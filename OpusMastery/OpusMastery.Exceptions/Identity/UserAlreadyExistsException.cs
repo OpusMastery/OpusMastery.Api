@@ -7,5 +7,5 @@ public class UserAlreadyExistsException : ApplicationExceptionBase
 {
     public override HttpStatusCode StatusCode => HttpStatusCode.Conflict;
 
-    public UserAlreadyExistsException(string userMessage) : base(userMessage) { }
+    public UserAlreadyExistsException(string email) : base($"The user with email: {email} has been already registered") { }
 }

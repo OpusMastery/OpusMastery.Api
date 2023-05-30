@@ -4,9 +4,9 @@ public class UserIdentifier
 {
     public Guid? Id { get; private set; }
 
-    private UserIdentifier(Guid? id)
+    private UserIdentifier(Guid? userId)
     {
-        Id = id;
+        Id = userId;
     }
 
     public static UserIdentifier Create(Guid? userId)

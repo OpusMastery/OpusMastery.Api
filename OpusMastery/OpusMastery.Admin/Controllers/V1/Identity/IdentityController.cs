@@ -22,4 +22,18 @@ public class IdentityController : ControllerBase
         Guid registeredUserId = await _identityService.RegisterUserAsync(demoUserRegistrationDto.ToDomain());
         return Ok(registeredUserId.ToString());
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody, Required] LoginFormDto loginFormDto)
+    {
+        await _identityService.LoginUserAsync(loginFormDto.ToDomain());
+        return Ok();
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody, Required] RefreshTokenDto refreshTokenDto)
+    {
+        // await _identityService.RefreshUserAuthorizationAsync(refreshTokenDto.ToDomain());
+        return Ok();
+    }
 }

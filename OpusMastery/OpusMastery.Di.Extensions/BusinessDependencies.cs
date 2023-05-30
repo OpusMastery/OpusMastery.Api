@@ -12,6 +12,7 @@ public static class BusinessDependencies
     public static IServiceCollection AddBusinessServices(this IServiceCollection serviceCollection)
     {
         return serviceCollection
+            .AddTransient<IClaimService, ClaimService>()
             .AddTransient<IIdentityService, IdentityService>()
             .AddTransient<IIdentityRepository, IdentityRepository>()
             .AddTransient<ICompanyService, CompanyService>();

@@ -19,6 +19,8 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DbSet<SystemUser>? Users { get; set; }
     public DbSet<SystemUserRole>? UserRoles { get; set; }
     public DbSet<SystemUserRoleEntityRights>? UserRoleEntityRights { get; set; }
+    public DbSet<SystemUserRefreshToken>? UserRefreshTokens { get; set; }
+    public DbSet<SystemUserVerificationCode>? UserVerificationCodes { get; set; }
     public DbSet<Employee>? Employees { get; set; }
     public DbSet<EmployeeRole>? EmployeeRoles { get; set; }
     public DbSet<Company>? Companies { get; set; }
@@ -38,6 +40,11 @@ public class DatabaseContext : DbContext, IDatabaseContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SystemUser>().HasIndex(user => user.Email).IsUnique();
+
+        modelBuilder.Entity<SystemUser>()
+            .HasOne(systemUser => systemUser.RefreshToken)
+            .WithOne(refreshToken => refreshToken.User)
+            .HasForeignKey<SystemUserRefreshToken>(refreshToken => refreshToken.UserId);
     }
 
     public Task InitializeDatabaseAsync(CancellationToken cancellationToken = default)
@@ -52,22 +59,29 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     public new ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
     {
-        entity.CreatedOn = DateTime.UtcNow;
         return base.AddAsync(entity, cancellationToken);
     }
 
-    public async Task<int> SaveNewAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    public async Task SaveNewAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
     {
         await AddAsync(entity, cancellationToken);
-        return await SaveAsync(cancellationToken);
+        await SaveAsync(cancellationToken);
     }
 
-    public async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    public Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : EntityBase
     {
-        foreach (TEntity entity in entities)
-        {
-            await AddAsync(entity, cancellationToken);
-        }
+        return base.AddRangeAsync(entities, cancellationToken);
+    }
+
+    public new EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : EntityBase
+    {
+        return base.Update(entity);
+    }
+
+    public Task SaveUpdatedAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : EntityBase
+    {
+        base.Update(entity);
+        return SaveAsync(cancellationToken);
     }
 
     public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
@@ -112,7 +126,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
         bool CheckEntityNameExistence(SystemUserRoleEntityRights entityRight)
         {
-            return entityRight.EntityName == entityEntry.Entity.GetType().Name || entityRight.EntityName is DomainConstants.EntityRight.FullAccess;
+            return entityRight.Name == entityEntry.Entity.GetType().Name || entityRight.Name is DomainConstants.EntityRight.FullAccess;
         }
     }
 }
