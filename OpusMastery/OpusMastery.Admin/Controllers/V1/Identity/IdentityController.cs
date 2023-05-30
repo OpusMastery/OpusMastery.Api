@@ -34,6 +34,6 @@ public class IdentityController : ControllerBase
     public async Task<IActionResult> RefreshAccessToken([FromBody, Required] RefreshAccessTokenDto refreshAccessTokenDto)
     {
         await _identityService.RefreshUserAuthorizationAsync();
-        return Ok();
+        return Ok(refreshAccessTokenDto);
     }
 }
