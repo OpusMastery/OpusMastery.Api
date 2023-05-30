@@ -66,9 +66,12 @@ public class IdentityRepository : IIdentityRepository
     private async Task<string> SetNewRefreshTokenAsync(User user)
     {
         var systemUser = await _databaseContext.Set<SystemUser>().FirstAsync(systemUser => systemUser.Id == user.Id);
-        systemUser.RefreshToken = user.RefreshToken!.ToDal();
-        await _databaseContext.SaveUpdatedAsync(systemUser);
+        var userRefreshToken = user.RefreshToken!.ToDal();
 
+        systemUser.RefreshTokenId = userRefreshToken.Id;
+        systemUser.RefreshToken = userRefreshToken;
+
+        await _databaseContext.SaveUpdatedAsync(systemUser);
         return systemUser.RefreshToken.Value;
     }
 }
