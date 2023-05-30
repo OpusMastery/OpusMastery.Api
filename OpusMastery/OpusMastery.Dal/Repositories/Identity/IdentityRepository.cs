@@ -68,10 +68,10 @@ public class IdentityRepository : IIdentityRepository
         var systemUser = await _databaseContext.Set<SystemUser>().FirstAsync(systemUser => systemUser.Id == user.Id);
         var userRefreshToken = user.RefreshToken!.ToDal();
 
+        await _databaseContext.AddAsync(userRefreshToken);
         systemUser.RefreshTokenId = userRefreshToken.Id;
-        systemUser.RefreshToken = userRefreshToken;
 
         await _databaseContext.SaveUpdatedAsync(systemUser);
-        return systemUser.RefreshToken.Value;
+        return user.RefreshToken!.Value;
     }
 }
