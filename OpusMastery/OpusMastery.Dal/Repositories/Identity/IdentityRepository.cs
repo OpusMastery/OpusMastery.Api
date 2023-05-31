@@ -17,11 +17,6 @@ public class IdentityRepository : IIdentityRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<bool> IsUserExistsByEmailAsync(string email)
-    {
-        return await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Email == email) is not null;
-    }
-
     public async Task<UserRole> GetDashboardUserRoleAsync()
     {
         var dashboardUserRole = await _databaseContext.Set<SystemUserRole>()
@@ -29,6 +24,16 @@ public class IdentityRepository : IIdentityRepository
             .FirstAsync(role => role.Id == DomainConstants.UserRole.DashboardUser);
 
         return dashboardUserRole.ToDomain();
+    }
+
+    public async Task<bool> IsUserExistsByEmailAsync(string email)
+    {
+        return await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Email == email) is not null;
+    }
+
+    public async Task<User?> GetUserById(Guid userId)
+    {
+        return (await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Id == userId))?.ToDomain();
     }
 
     public async Task<User?> GetUserByCredentialsAsync(UserCredentials credentials)
@@ -77,6 +82,6 @@ public class IdentityRepository : IIdentityRepository
         user.RefreshTokenId = userRefreshToken.Id;
 
         await _databaseContext.SaveUpdatedAsync(user);
-        return user.RefreshToken!.Value;
+        return refreshToken.Value;
     }
 }

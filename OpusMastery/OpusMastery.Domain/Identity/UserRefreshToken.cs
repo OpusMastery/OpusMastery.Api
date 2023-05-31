@@ -20,6 +20,11 @@ public class UserRefreshToken
         return new UserRefreshToken(userId, value: StringExtensions.GenerateRandomHexString(tokenSize), expiresOn);
     }
 
+    public static UserRefreshToken CreateWithoutExpiration(Guid userId, string value)
+    {
+        return new UserRefreshToken(userId, value, DateTime.UnixEpoch);
+    }
+
     public static UserRefreshToken Create(Guid userId, string value, DateTime expiresOn)
     {
         return new UserRefreshToken(userId, value, expiresOn);

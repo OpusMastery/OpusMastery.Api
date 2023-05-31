@@ -29,12 +29,17 @@ public class User
         RefreshToken = refreshToken;
     }
 
-    public void SetNewRole(UserRole role)
+    public void SetRole(UserRole role)
     {
         Role = role;
     }
 
-    public void GenerateNewRefreshToken(int tokenSize, DateTime expiresOn)
+    public bool ContainsGivenRefreshToken(UserRefreshToken refreshToken)
+    {
+        return RefreshToken is not null && RefreshToken.Value == refreshToken.Value && RefreshToken.ExpiresOn > DateTime.UtcNow;
+    }
+
+    public void GenerateRefreshToken(int tokenSize, DateTime expiresOn)
     {
         RefreshToken = UserRefreshToken.CreateNew(Id, tokenSize, expiresOn);
     }

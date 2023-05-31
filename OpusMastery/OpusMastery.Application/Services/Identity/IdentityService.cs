@@ -23,12 +23,12 @@ public class IdentityService : IIdentityService
             .ThrowIfTrue(() => new UserAlreadyExistsException(user.Email));
 
         var userRole = await _identityRepository.GetDashboardUserRoleAsync();
-        user.SetNewRole(userRole);
+        user.SetRole(userRole);
 
         return await _identityRepository.SaveNewUserAsync(user);
     }
 
-    public async Task<JsonWebToken> LoginUserAsync(UserCredentials credentials)
+    public async Task<AccessCredentials> LoginUserAsync(UserCredentials credentials)
     {
         User? user = await _identityRepository.GetUserByCredentialsAsync(credentials);
         if (user is null || user.Status is UserStatus.Deactivated)
@@ -36,13 +36,24 @@ public class IdentityService : IIdentityService
             throw new AuthenticationException();
         }
 
-        ClaimsIdentity claimsIdentity = _claimService.CreateIdentity(user);
-        string refreshToken = await _claimService.GenerateNewRefreshTokenAsync(user);
-        return _claimService.AuthenticateUser(claimsIdentity, refreshToken);
+        return await CreateAccessCredentialsAsync(user);
     }
 
-    public Task RefreshUserAuthorizationAsync()
+    public async Task<AccessCredentials> RefreshUserAccessTokenAsync(UserRefreshToken refreshToken)
     {
-        return Task.CompletedTask;
+        User? user = await _identityRepository.GetUserById(refreshToken.UserId);
+        if (user is null || !user.ContainsGivenRefreshToken(refreshToken))
+        {
+            throw new RefreshTokenValidationException();
+        }
+
+        return await CreateAccessCredentialsAsync(user);
+    }
+
+    private async Task<AccessCredentials> CreateAccessCredentialsAsync(User user)
+    {
+        ClaimsIdentity claimsIdentity = _claimService.CreateIdentity(user);
+        string newRefreshToken = await _claimService.GenerateNewRefreshTokenAsync(user);
+        return _claimService.AuthenticateUser(claimsIdentity, newRefreshToken);
     }
 }

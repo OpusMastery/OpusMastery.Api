@@ -119,7 +119,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
         {
             if (!HasRequiredEntityRight(entityEntry, entityRights))
             {
-                throw new InsufficientAccessRightsException($"The user with userId: {userId} does not have access to the resource with the state {entityEntry.State}");
+                throw new InsufficientAccessRightsException($"The user with userId: {userId} does not have access to the resource with the state {entityEntry.State}.");
             }
         }
     }

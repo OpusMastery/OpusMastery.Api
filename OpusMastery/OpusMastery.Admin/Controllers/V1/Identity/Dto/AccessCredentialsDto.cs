@@ -1,6 +1,6 @@
 ﻿namespace OpusMastery.Admin.Controllers.V1.Identity.Dto;
 
-public class JsonWebTokenDto
+public class AccessCredentialsDto
 {
     public required string AccessToken { get; set; }
     public required string RefreshToken { get; set; }

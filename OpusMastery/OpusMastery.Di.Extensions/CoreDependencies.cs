@@ -6,6 +6,7 @@ using OpusMastery.Application.Extensions;
 using OpusMastery.Configuration;
 using OpusMastery.Domain;
 using OpusMastery.Middlewares;
+using OpusMastery.Middlewares.Formatters;
 
 namespace OpusMastery.Di.Extensions;
 
@@ -20,8 +21,8 @@ public static class CoreDependencies
     public static IServiceCollection AddMiddlewares(this IServiceCollection serviceCollection)
     {
         return serviceCollection
-            .AddScoped<RequestLoggerMiddleware>()
-            .AddScoped<IdentityMiddleware>();
+            .AddScoped<IdentityMiddleware>()
+            .AddScoped<RequestLoggerMiddleware>();
     }
 
     public static IServiceCollection AddJwtValidation(this IServiceCollection serviceCollection, JwtSettings jwtSettings)

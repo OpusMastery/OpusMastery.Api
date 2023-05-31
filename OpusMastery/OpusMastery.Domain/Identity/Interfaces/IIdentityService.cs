@@ -3,6 +3,6 @@
 public interface IIdentityService
 {
     public Task<Guid> RegisterUserAsync(User user);
-    public Task<JsonWebToken> LoginUserAsync(UserCredentials credentials);
-    public Task RefreshUserAuthorizationAsync();
+    public Task<AccessCredentials> LoginUserAsync(UserCredentials credentials);
+    public Task<AccessCredentials> RefreshUserAccessTokenAsync(UserRefreshToken refreshToken);
 }

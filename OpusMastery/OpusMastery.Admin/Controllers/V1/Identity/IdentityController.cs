@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpusMastery.Admin.Controllers.V1.Identity.Dto;
-using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 
 namespace OpusMastery.Admin.Controllers.V1.Identity;
@@ -19,31 +17,24 @@ public class IdentityController : ControllerBase
         _identityService = identityService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("register"), AllowAnonymous]
     public async Task<ActionResult<Guid>> RegisterDemoUser([FromBody, Required] DemoUserRegistrationDto demoUserRegistrationDto)
     {
         Guid registeredUserId = await _identityService.RegisterUserAsync(demoUserRegistrationDto.ToDomain());
         return Ok(registeredUserId.ToString());
     }
 
-    [HttpPost("login")]
-    public async Task<ActionResult<JsonWebTokenDto>> Login([FromBody, Required] LoginFormDto loginFormDto)
+    [HttpPost("login"), AllowAnonymous]
+    public async Task<ActionResult<AccessCredentialsDto>> Login([FromBody, Required] LoginFormDto loginFormDto)
     {
-        var jsonWebToken = await _identityService.LoginUserAsync(loginFormDto.ToDomain());
-        return Ok(jsonWebToken.ToDto());
+        var accessCredentials = await _identityService.LoginUserAsync(loginFormDto.ToDomain());
+        return Ok(accessCredentials.ToDto());
     }
 
-    [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshAccessToken([FromBody, Required] RefreshAccessTokenDto refreshAccessTokenDto)
+    [HttpPost("refresh-token"), AllowAnonymous]
+    public async Task<ActionResult<AccessCredentialsDto>> RefreshAccessToken([FromBody, Required] RefreshAccessTokenDto refreshAccessTokenDto)
     {
-        await _identityService.RefreshUserAuthorizationAsync();
-        return Ok(refreshAccessTokenDto);
-    }
-
-    [HttpGet("test")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public JsonResult GetTest()
-    {
-        return new JsonResult(new { UserId = CurrentContextIdentity.User.Id });
+        var accessCredentials = await _identityService.RefreshUserAccessTokenAsync(refreshAccessTokenDto.ToDomain());
+        return Ok(accessCredentials.ToDto());
     }
 }

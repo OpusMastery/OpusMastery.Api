@@ -18,13 +18,18 @@ public static class Converter
         return UserCredentials.Create(loginFormDto.Email.ToLower(), loginFormDto.Password);
     }
 
-    public static JsonWebTokenDto ToDto(this JsonWebToken jsonWebToken)
+    public static UserRefreshToken ToDomain(this RefreshAccessTokenDto refreshAccessTokenDto)
     {
-        return new JsonWebTokenDto
+        return UserRefreshToken.CreateWithoutExpiration(refreshAccessTokenDto.UserId, refreshAccessTokenDto.RefreshToken);
+    }
+
+    public static AccessCredentialsDto ToDto(this AccessCredentials accessCredentials)
+    {
+        return new AccessCredentialsDto
         {
-            AccessToken = jsonWebToken.AccessToken,
-            RefreshToken = jsonWebToken.RefreshToken,
-            TokenType = jsonWebToken.TokenType
+            AccessToken = accessCredentials.AccessToken,
+            RefreshToken = accessCredentials.RefreshToken,
+            TokenType = accessCredentials.TokenType
         };
     }
 }

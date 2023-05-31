@@ -40,11 +40,11 @@ public class ClaimService : IClaimService
 
     public Task<string> GenerateNewRefreshTokenAsync(User user)
     {
-        user.GenerateNewRefreshToken(_jwtSettings.RefreshTokenLength, _jwtSettings.RefreshTokenValidUntil);
+        user.GenerateRefreshToken(_jwtSettings.RefreshTokenLength, _jwtSettings.RefreshTokenValidUntil);
         return _identityRepository.UpdateUserRefreshTokensAsync(user);
     }
 
-    public JsonWebToken AuthenticateUser(ClaimsIdentity claimsIdentity, string refreshToken)
+    public AccessCredentials AuthenticateUser(ClaimsIdentity claimsIdentity, string refreshToken)
     {
         var jwtSecurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
@@ -55,6 +55,6 @@ public class ClaimService : IClaimService
             signingCredentials: new SigningCredentials(_jwtSettings.SecretKey.GetSecurityKey(), SecurityAlgorithms.HmacSha512));
 
         string encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        return JsonWebToken.Create(encodedAccessToken, refreshToken, DomainConstants.JwtAuthenticationType);
+        return AccessCredentials.Create(encodedAccessToken, refreshToken, DomainConstants.JwtAuthenticationType);
     }
 }
