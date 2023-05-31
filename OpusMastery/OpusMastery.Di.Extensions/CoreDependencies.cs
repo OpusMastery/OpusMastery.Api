@@ -50,7 +50,10 @@ public static class CoreDependencies
     {
         return serviceCollection.AddCors(options =>
         {
-            options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            options.AddDefaultPolicy(builder => builder
+                .AllowAnyOrigin()
+                .WithMethods(HttpMethod.Connect.Method, HttpMethod.Options.Method, HttpMethod.Get.Method, HttpMethod.Post.Method)
+                .AllowAnyHeader());
         });
     }
 }

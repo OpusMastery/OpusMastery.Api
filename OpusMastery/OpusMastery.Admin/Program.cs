@@ -2,6 +2,7 @@ using OpusMastery.Admin.Extensions;
 using OpusMastery.Di.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseKestrel(options => options.AddServerHeader = false);
 
 // Add environmental configuration to the DI container
 var applicationSettings = builder
