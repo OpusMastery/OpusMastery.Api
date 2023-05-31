@@ -15,7 +15,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPost("demo")]
-    public async Task<IActionResult> CreateDemoCompany()
+    public IActionResult CreateDemoCompany()
     {
         return Ok();
     }

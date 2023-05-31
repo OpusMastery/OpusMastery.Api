@@ -8,34 +8,31 @@ var applicationSettings = builder
     .AddConfigurationProviders()
     .AddApplicationSettings();
 
-// Infrastructure dependencies
-builder.Services.AddDatabase(applicationSettings);
-
 // Core dependencies
 builder.Services
     .AddControllersWithFilters()
-    .AddMiddlewares();
+    .AddMiddlewares()
+    .AddJwtValidation(applicationSettings.JwtSettings)
+    .AddHealthChecks();
+
+// Infrastructure dependencies
+builder.Services.AddDatabase(applicationSettings);
 
 // Business dependencies
 builder.Services.AddBusinessServices();
 
-// builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
-
 WebApplication application = builder.Build();
-
 await application.InitializeDatabaseAsync();
 
 if (application.Environment.IsDevelopment())
 {
     application.UseHttpsRedirection();
-    // application.UseSwagger();
-    // application.UseSwaggerUI();
 }
 
-application.UseAuthorization();
+application.UseAuthentication();
 
 application.UseMiddlewares();
+application.UseHealthChecks("/api/health");
 application.MapControllers();
 
 await application.RunAsync();

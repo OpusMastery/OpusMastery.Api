@@ -2,7 +2,7 @@
 
 public static class DomainConstants
 {
-    public const string JsonWebTokenType = "Bearer";
+    public const string JwtAuthenticationType = "Bearer";
 
     public static class UserRole
     {

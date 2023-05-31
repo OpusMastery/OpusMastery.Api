@@ -1,13 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OpusMastery.Application.Extensions;
 using OpusMastery.Configuration;
 using OpusMastery.Domain;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
-using OpusMastery.Extensions;
 
 namespace OpusMastery.Application.Services.Identity;
 
@@ -34,7 +33,7 @@ public class ClaimService : IClaimService
 
         return new ClaimsIdentity(
             requiredClaims,
-            DefaultAuthenticationTypes.ExternalBearer,
+            DomainConstants.JwtAuthenticationType,
             ClaimsIdentity.DefaultNameClaimType,
             ClaimsIdentity.DefaultRoleClaimType);
     }
@@ -53,14 +52,9 @@ public class ClaimService : IClaimService
             claims: claimsIdentity.Claims,
             notBefore: _jwtSettings.AccessTokenNotValidBefore,
             expires: _jwtSettings.AccessTokenValidUntil,
-            signingCredentials: GetJwtSignature(_jwtSettings.SecretKey));
+            signingCredentials: new SigningCredentials(_jwtSettings.SecretKey.GetSecurityKey(), SecurityAlgorithms.HmacSha512));
 
         string encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        return JsonWebToken.Create(encodedAccessToken, refreshToken, DomainConstants.JsonWebTokenType);
-    }
-
-    private static SigningCredentials GetJwtSignature(string securityKey)
-    {
-        return new SigningCredentials(new SymmetricSecurityKey(securityKey.ToByteArray()), SecurityAlgorithms.HmacSha512);
+        return JsonWebToken.Create(encodedAccessToken, refreshToken, DomainConstants.JwtAuthenticationType);
     }
 }

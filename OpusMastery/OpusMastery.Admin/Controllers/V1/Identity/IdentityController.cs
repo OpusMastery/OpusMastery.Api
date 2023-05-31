@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpusMastery.Admin.Controllers.V1.Identity.Dto;
+using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 
 namespace OpusMastery.Admin.Controllers.V1.Identity;
@@ -35,5 +38,12 @@ public class IdentityController : ControllerBase
     {
         await _identityService.RefreshUserAuthorizationAsync();
         return Ok(refreshAccessTokenDto);
+    }
+
+    [HttpGet("test")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public JsonResult GetTest()
+    {
+        return new JsonResult(new { UserId = CurrentContextIdentity.User.Id });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OpusMastery.Domain;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Extensions;
 
@@ -8,7 +9,7 @@ public class IdentityMiddleware : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        string? userId = context.User.Claims.FirstOrDefault(claim => claim.Type == "UserId")?.Value;
+        string? userId = context.User.Claims.FirstOrDefault(claim => claim.Type is DomainConstants.IdentityClaim.IdentityId)?.Value;
         var userIdentifier = UserIdentifier.Create(userId.ToGuidOrDefault());
 
         using (CurrentContextIdentity.SetIdentifier(userIdentifier))
