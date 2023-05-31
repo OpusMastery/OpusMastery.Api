@@ -45,4 +45,12 @@ public static class CoreDependencies
                 };
             }).Services;
     }
+
+    public static IServiceCollection AddCorsPolicies(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        });
+    }
 }

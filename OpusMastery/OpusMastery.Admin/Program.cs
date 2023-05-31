@@ -13,6 +13,7 @@ builder.Services
     .AddControllersWithFilters()
     .AddMiddlewares()
     .AddJwtValidation(applicationSettings.JwtSettings)
+    .AddCorsPolicies()
     .AddHealthChecks();
 
 // Infrastructure dependencies
@@ -29,6 +30,7 @@ if (application.Environment.IsDevelopment())
     application.UseHttpsRedirection();
 }
 
+application.UseCors();
 application.UseAuthentication();
 
 application.UseMiddlewares();
