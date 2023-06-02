@@ -3,7 +3,7 @@
 public interface IIdentityRepository
 {
     public Task<UserRole> GetDashboardUserRoleAsync();
-    public Task<bool> IsUserExistsByEmailAsync(string email);
+    public Task<User?> GetUserByEmailAsync(string email);
     public Task<User?> GetUserById(Guid userId);
     public Task<User?> GetUserByCredentialsAsync(UserCredentials credentials);
     public Task<string> UpdateUserRefreshTokensAsync(User user);

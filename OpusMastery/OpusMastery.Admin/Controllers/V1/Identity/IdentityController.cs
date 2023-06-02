@@ -17,6 +17,13 @@ public class IdentityController : ControllerBase
         _identityService = identityService;
     }
 
+    [HttpGet("status"), AllowAnonymous]
+    public async Task<ActionResult<UserStatusDto>> GetUserStatus([FromQuery, Required(AllowEmptyStrings = false)] string userEmail)
+    {
+        var userStatus = await _identityService.GetUserStatusAsync(userEmail);
+        return Ok(userStatus.ToDto());
+    }
+
     [HttpPost("register"), AllowAnonymous]
     public async Task<ActionResult<Guid>> RegisterDemoUser([FromBody, Required] DemoUserRegistrationDto demoUserRegistrationDto)
     {

@@ -1,4 +1,5 @@
 ﻿using OpusMastery.Domain.Identity;
+using OpusMastery.Extensions;
 
 namespace OpusMastery.Admin.Controllers.V1.Identity.Dto;
 
@@ -31,5 +32,10 @@ public static class Converter
             RefreshToken = accessCredentials.RefreshToken,
             TokenType = accessCredentials.TokenType
         };
+    }
+
+    public static UserStatusDto ToDto(this UserStatus userStatus)
+    {
+        return new UserStatusDto { Status = userStatus.ToEnumName() };
     }
 }

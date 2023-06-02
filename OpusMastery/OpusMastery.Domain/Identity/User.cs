@@ -57,8 +57,9 @@ public class User
 
 public enum UserStatus
 {
-    NewlyCreated = 0,
+    NewlyCreated = 1,
     Incomplete,
-    Activated,
-    Deactivated
+    Registered,
+    Deactivated,
+    Nonexistent
 }

@@ -9,9 +9,9 @@ public static class GuardExtensions
         return value is null ? throw exceptionFactory() : value;
     }
 
-    public static void ThrowIfTrue(this bool value, Func<Exception> exceptionFactory)
+    public static void ThrowIfNotNull<T>(this T? value, Func<Exception> exceptionFactory)
     {
-        if (value)
+        if (value is not null)
         {
             throw exceptionFactory();
         }

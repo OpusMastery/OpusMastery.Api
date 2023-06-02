@@ -17,10 +17,15 @@ public class IdentityService : IIdentityService
         _identityRepository = identityRepository;
     }
 
+    public async Task<UserStatus> GetUserStatusAsync(string email)
+    {
+        User? user = await _identityRepository.GetUserByEmailAsync(email);
+        return user?.Status ?? UserStatus.Nonexistent;
+    }
+
     public async Task<Guid> RegisterUserAsync(User user)
     {
-        (await _identityRepository.IsUserExistsByEmailAsync(user.Email))
-            .ThrowIfTrue(() => new UserAlreadyExistsException(user.Email));
+        (await _identityRepository.GetUserByEmailAsync(user.Email)).ThrowIfNotNull(() => new UserAlreadyExistsException(user.Email));
 
         var userRole = await _identityRepository.GetDashboardUserRoleAsync();
         user.SetRole(userRole);

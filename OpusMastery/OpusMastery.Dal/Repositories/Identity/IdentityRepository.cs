@@ -26,9 +26,9 @@ public class IdentityRepository : IIdentityRepository
         return dashboardUserRole.ToDomain();
     }
 
-    public async Task<bool> IsUserExistsByEmailAsync(string email)
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
-        return await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Email == email) is not null;
+        return (await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Email == email))?.ToDomain();
     }
 
     public async Task<User?> GetUserById(Guid userId)
