@@ -35,7 +35,7 @@ public static class CoreDependencies
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IncludeTokenOnFailedValidation = true,
+                    IncludeTokenOnFailedValidation = false,
                     AuthenticationType = DomainConstants.JwtAuthenticationType,
                     ValidAlgorithms = new [] { SecurityAlgorithms.HmacSha512 },
                     ValidIssuer = jwtSettings.Issuer,
@@ -52,7 +52,7 @@ public static class CoreDependencies
         {
             options.AddDefaultPolicy(builder => builder
                 .AllowAnyOrigin()
-                .WithMethods(HttpMethod.Connect.Method, HttpMethod.Options.Method, HttpMethod.Get.Method, HttpMethod.Post.Method)
+                .WithMethods(HttpMethod.Connect.Method, HttpMethod.Options.Method, HttpMethod.Get.Method, HttpMethod.Post.Method, HttpMethod.Delete.Method)
                 .AllowAnyHeader());
         });
     }
