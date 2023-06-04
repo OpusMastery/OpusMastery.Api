@@ -8,7 +8,7 @@ public class EmployeeDetails
     public string Email { get; private set; }
     public string Position { get; private set; }
     public EmployeeStatus Status { get; private set; }
-    public DateTime JoiningDate { get; private set; }
+    public DateOnly JoiningDate { get; private set; }
     public EmployeeRole Role { get; private set; }
     public string? Phone { get; private set; }
     public string? DepartmentName { get; private set; }
@@ -20,7 +20,7 @@ public class EmployeeDetails
         string email,
         string position,
         EmployeeStatus status,
-        DateTime joiningDate,
+        DateOnly joiningDate,
         EmployeeRole role,
         string? phone,
         string? departmentName)
@@ -43,7 +43,7 @@ public class EmployeeDetails
         string lastName,
         string email,
         string position,
-        DateTime joiningDate,
+        DateOnly joiningDate,
         EmployeeRole role,
         string? phone,
         string? departmentName)
@@ -58,7 +58,7 @@ public class EmployeeDetails
         string email,
         string position,
         EmployeeStatus status,
-        DateTime joiningDate,
+        DateOnly joiningDate,
         EmployeeRole role,
         string? phone,
         string? departmentName)

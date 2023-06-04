@@ -6,8 +6,8 @@ public class EmployeeCreationDto
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public required string Position { get; set; }
-    public required DateTime JoiningDate { get; set; }
-    public required string Role { get; set; } = "Worker";
+    public required DateOnly JoiningDate { get; set; }
+    public string Role { get; set; } = "Worker";
     public string? Phone { get; set; }
     public string? DepartmentName { get; set; }
 }

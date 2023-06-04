@@ -18,7 +18,7 @@ public static class Converter
             employeeCreationDto.LastName,
             employeeCreationDto.Email,
             employeeCreationDto.Position,
-            employeeCreationDto.JoiningDate.Date,
+            employeeCreationDto.JoiningDate,
             employeeCreationDto.Role.ToEnum<EmployeeRole>(),
             employeeCreationDto.Phone,
             employeeCreationDto.DepartmentName);
