@@ -1,11 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using OpusMastery.Dal.Contexts.Interfaces;
-using OpusMastery.Dal.Models.Identity;
-using OpusMastery.Exceptions.Identity;
-using OpusMastery.Extensions;
-
-namespace OpusMastery.Dal.Extensions;
+﻿namespace OpusMastery.Dal.Extensions;
 
 public static class IdentityQueryableExtensions
 {

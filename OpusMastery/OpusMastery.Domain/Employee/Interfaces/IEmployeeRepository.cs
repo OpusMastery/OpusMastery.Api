@@ -2,7 +2,6 @@
 
 public interface IEmployeeRepository
 {
-    public Task<EmployeeRole> GetWorkerRoleAsync();
     public Task<List<EmployeeDetails>> GetAllEmployeesByCompanyIdAsync(Guid companyId);
-    public Task<Guid> AddEmployeeToCompanyAsync(EmployeeDetails employeeDetails);
+    public Task<Guid> AddEmployeeToCompanyAsync(Guid userId, EmployeeDetails employeeDetails);
 }

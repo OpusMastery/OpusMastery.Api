@@ -23,11 +23,7 @@ public class EmployeeService : IEmployeeService
     public async Task<Guid> CreateEmployeeAsync(EmployeeDetails employeeDetails)
     {
         var user = await _identityService.GetUserAsync(employeeDetails.Email);
-        employeeDetails.SetUserId(user?.Id ?? await _identityService.RegisterUserAsync(employeeDetails.ToIdentityDomain()));
-
-        var employeeRole = await _employeeRepository.GetWorkerRoleAsync();
-        employeeDetails.SetRole(employeeRole);
-
-        return await _employeeRepository.AddEmployeeToCompanyAsync(employeeDetails);
+        Guid userId = user?.Id ?? await _identityService.RegisterUserAsync(employeeDetails.ToIdentityDomain());
+        return await _employeeRepository.AddEmployeeToCompanyAsync(userId, employeeDetails);
     }
 }

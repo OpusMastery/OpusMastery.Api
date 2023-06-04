@@ -28,9 +28,9 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateEmployee([FromHeader, Required] Guid companyId, [FromBody, Required] EmployeeDetailsDto employeeDetailsDto)
+    public async Task<ActionResult<Guid>> CreateEmployee([FromHeader, Required] Guid companyId, [FromBody, Required] EmployeeCreationDto employeeCreationDto)
     {
-        Guid employeeId = await _employeeService.CreateEmployeeAsync(employeeDetailsDto.ToDomain(companyId));
+        Guid employeeId = await _employeeService.CreateEmployeeAsync(employeeCreationDto.ToDomain(companyId));
         return Ok(employeeId.ToString());
     }
 }

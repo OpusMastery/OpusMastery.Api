@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpusMastery.Dal.Contexts.Interfaces;
-using OpusMastery.Domain;
 using OpusMastery.Domain.Employee;
 using OpusMastery.Domain.Employee.Interfaces;
 using EmployeeRoleDal = OpusMastery.Dal.Models.EmployeeRole;
@@ -17,15 +16,6 @@ public class EmployeeRepository : IEmployeeRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<EmployeeRole> GetWorkerRoleAsync()
-    {
-        var workerEmployeeRole = await _databaseContext.Set<EmployeeRoleDal>()
-            .AsNoTracking()
-            .FirstAsync(role => role.Id == DomainConstants.EmployeeRole.Worker);
-
-        return workerEmployeeRole.ToDomain();
-    }
-
     public async Task<List<EmployeeDetails>> GetAllEmployeesByCompanyIdAsync(Guid companyId)
     {
         List<EmployeeDal> employees = await _databaseContext.Set<EmployeeDal>()
@@ -39,9 +29,9 @@ public class EmployeeRepository : IEmployeeRepository
         return employees.ToEnumerableDomain();
     }
 
-    public async Task<Guid> AddEmployeeToCompanyAsync(EmployeeDetails employeeDetails)
+    public async Task<Guid> AddEmployeeToCompanyAsync(Guid userId, EmployeeDetails employeeDetails)
     {
-        var employee = employeeDetails.ToDal();
+        var employee = employeeDetails.ToDal(userId);
         await _databaseContext.SaveNewAsync(employee);
         return employee.Id;
     }

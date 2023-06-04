@@ -5,7 +5,6 @@ using OpusMastery.Dal.Contexts.Interfaces;
 using OpusMastery.Dal.Models;
 using OpusMastery.Dal.Models.Abstractions;
 using OpusMastery.Dal.Models.Identity;
-using OpusMastery.Domain;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Exceptions.Identity;
 using OpusMastery.Extensions;
@@ -137,7 +136,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
         bool CheckEntityNameExistence(SystemUserRoleEntityRights entityRight)
         {
-            return entityRight.Name == entityEntry.Entity.GetType().Name || entityRight.Name is DomainConstants.EntityRight.FullAccess;
+            return entityRight.Name == entityEntry.Entity.GetType().Name || entityRight.Name is Constants.FullAccessRight;
         }
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpusMastery.Application.Extensions;
 using OpusMastery.Configuration;
-using OpusMastery.Domain;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 
@@ -28,12 +27,12 @@ public class ClaimService : IClaimService
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Name, user.FullName),
             new(ClaimTypes.Role, user.Role!.Name),
-            new(DomainConstants.IdentityClaim.IdentityId, user.Id.ToString())
+            new(Constants.ClaimName.IdentityId, user.Id.ToString())
         };
 
         return new ClaimsIdentity(
             requiredClaims,
-            DomainConstants.JwtAuthenticationType,
+            Constants.JwtAuthenticationType,
             ClaimsIdentity.DefaultNameClaimType,
             ClaimsIdentity.DefaultRoleClaimType);
     }
@@ -55,6 +54,6 @@ public class ClaimService : IClaimService
             signingCredentials: new SigningCredentials(_jwtSettings.SecretKey.GetSecurityKey(), SecurityAlgorithms.HmacSha512));
 
         string encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        return AccessCredentials.Create(encodedAccessToken, refreshToken, DomainConstants.JwtAuthenticationType);
+        return AccessCredentials.Create(encodedAccessToken, refreshToken, Constants.JwtAuthenticationType);
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace OpusMastery.Admin.Controllers.V1.Employee.Dto;
 
-public class EmployeeDetailsDto
+public class EmployeeCreationDto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public required string Position { get; set; }
-    public required string Status { get; set; }
     public required DateTime JoiningDate { get; set; }
+    public required string Role { get; set; } = "Worker";
     public string? Phone { get; set; }
     public string? DepartmentName { get; set; }
 }

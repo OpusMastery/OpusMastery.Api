@@ -10,17 +10,18 @@ public static class Converter
         return employeesDetails.Select(ToDto);
     }
 
-    public static EmployeeDetails ToDomain(this EmployeeDetailsDto employeeDetailsDto, Guid companyId)
+    public static EmployeeDetails ToDomain(this EmployeeCreationDto employeeCreationDto, Guid companyId)
     {
         return EmployeeDetails.CreateNew(
             companyId,
-            employeeDetailsDto.FirstName,
-            employeeDetailsDto.LastName,
-            employeeDetailsDto.Email,
-            employeeDetailsDto.Position,
-            employeeDetailsDto.JoiningDate?.Date ?? DateTime.UtcNow.Date,
-            employeeDetailsDto.Phone,
-            employeeDetailsDto.DepartmentName);
+            employeeCreationDto.FirstName,
+            employeeCreationDto.LastName,
+            employeeCreationDto.Email,
+            employeeCreationDto.Position,
+            employeeCreationDto.JoiningDate.Date,
+            employeeCreationDto.Role.ToEnum<EmployeeRole>(),
+            employeeCreationDto.Phone,
+            employeeCreationDto.DepartmentName);
     }
 
     private static EmployeeDetailsDto ToDto(this EmployeeDetails employeeDetails)

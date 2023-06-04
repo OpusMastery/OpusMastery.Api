@@ -1,18 +1,23 @@
 ﻿namespace OpusMastery.Domain.Employee;
 
-public class EmployeeRole
+public static class EmployeeRoleManager
 {
-    public Guid Id { get; private set; }
-    public string Name { get; private set; }
-
-    private EmployeeRole(Guid id, string name)
+    private static readonly Dictionary<Guid, EmployeeRole> EmployeeRoles = new()
     {
-        Id = id;
-        Name = name;
-    }
+        { Constants.WorkerRoleId, EmployeeRole.Worker },
+        { Constants.HrManagerRoleId, EmployeeRole.HrManager },
+        { Constants.CompanyOwnerRoleId, EmployeeRole.CompanyOwner }
+    };
 
-    public static EmployeeRole Create(Guid id, string name)
+    public static Guid GetRoleIdByName(EmployeeRole role)
     {
-        return new EmployeeRole(id, name);
+        return EmployeeRoles.First(x => x.Value == role).Key;
     }
+}
+
+public enum EmployeeRole
+{
+    Worker = 1,
+    HrManager,
+    CompanyOwner
 }

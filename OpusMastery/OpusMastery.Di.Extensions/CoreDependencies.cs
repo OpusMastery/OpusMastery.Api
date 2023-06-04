@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OpusMastery.Application.Extensions;
 using OpusMastery.Configuration;
-using OpusMastery.Domain;
+using OpusMastery.Domain.Identity;
 using OpusMastery.Middlewares;
 using OpusMastery.Middlewares.Formatters;
 
@@ -36,7 +36,7 @@ public static class CoreDependencies
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     IncludeTokenOnFailedValidation = false,
-                    AuthenticationType = DomainConstants.JwtAuthenticationType,
+                    AuthenticationType = Constants.JwtAuthenticationType,
                     ValidAlgorithms = new [] { SecurityAlgorithms.HmacSha512 },
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,

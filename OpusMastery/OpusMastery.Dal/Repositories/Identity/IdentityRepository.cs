@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpusMastery.Dal.Contexts.Interfaces;
 using OpusMastery.Dal.Models.Identity;
-using OpusMastery.Domain;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 using OpusMastery.Extensions;
@@ -21,7 +20,7 @@ public class IdentityRepository : IIdentityRepository
     {
         var dashboardUserRole = await _databaseContext.Set<SystemUserRole>()
             .AsNoTracking()
-            .FirstAsync(role => role.Id == DomainConstants.UserRole.DashboardUser);
+            .FirstAsync(role => role.Id == Constants.Role.DashboardUserRoleId);
 
         return dashboardUserRole.ToDomain();
     }
