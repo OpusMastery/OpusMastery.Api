@@ -4,9 +4,9 @@ public static class EmployeeRoleManager
 {
     private static readonly Dictionary<Guid, EmployeeRole> EmployeeRoles = new()
     {
-        { Constants.WorkerRoleId, EmployeeRole.Worker },
-        { Constants.HrManagerRoleId, EmployeeRole.HrManager },
-        { Constants.CompanyOwnerRoleId, EmployeeRole.CompanyOwner }
+        { Constants.Role.WorkerRoleId, EmployeeRole.Worker },
+        { Constants.Role.HrManagerRoleId, EmployeeRole.HrManager },
+        { Constants.Role.CompanyOwnerRoleId, EmployeeRole.CompanyOwner }
     };
 
     public static Guid GetRoleIdByName(EmployeeRole role)

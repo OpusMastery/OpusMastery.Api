@@ -37,11 +37,6 @@ public class EmployeeDetails
         DepartmentName = departmentName;
     }
 
-    public void SetRole(EmployeeRole role)
-    {
-        Role = role;
-    }
-
     public static EmployeeDetails CreateNew(
         Guid companyId,
         string firstName,

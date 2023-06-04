@@ -54,12 +54,3 @@ public class User
         return new User(id, email, password, firstName, lastName, status, role, refreshToken);
     }
 }
-
-public enum UserStatus
-{
-    NewlyCreated = 1,
-    Incomplete,
-    Registered,
-    Deactivated,
-    Nonexistent
-}
