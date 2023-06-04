@@ -52,7 +52,7 @@ public static class CoreDependencies
         {
             options.AddDefaultPolicy(builder => builder
                 .AllowAnyOrigin()
-                .WithMethods(HttpMethod.Connect.Method, HttpMethod.Options.Method, HttpMethod.Get.Method, HttpMethod.Post.Method, HttpMethod.Delete.Method)
+                .WithMethods(HttpMethod.Connect.Method, HttpMethod.Options.Method, HttpMethod.Get.Method, HttpMethod.Post.Method, HttpMethod.Patch.Method)
                 .AllowAnyHeader());
         });
     }

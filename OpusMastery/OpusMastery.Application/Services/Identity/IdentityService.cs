@@ -23,6 +23,11 @@ public class IdentityService : IIdentityService
         return user?.Status ?? UserStatus.Nonexistent;
     }
 
+    public Task<User?> GetUserAsync(string email)
+    {
+        return _identityRepository.GetUserByEmailAsync(email);
+    }
+
     public async Task<Guid> RegisterUserAsync(User user)
     {
         (await _identityRepository.GetUserByEmailAsync(user.Email)).ThrowIfNotNull(() => new UserAlreadyExistsException(user.Email));
