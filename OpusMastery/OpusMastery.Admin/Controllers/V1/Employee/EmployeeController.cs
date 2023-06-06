@@ -9,7 +9,7 @@ using OpusMastery.Domain.Employee.Interfaces;
 namespace OpusMastery.Admin.Controllers.V1.Employee;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/employees")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class EmployeeController : ControllerBase
 {
@@ -20,7 +20,7 @@ public class EmployeeController : ControllerBase
         _employeeService = employeeService;
     }
 
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDetails>>> GetCompanyEmployees([FromHeader, Required] Guid companyId)
     {
         List<EmployeeDetails> employees = await _employeeService.GetAllEmployeesAsync(companyId);

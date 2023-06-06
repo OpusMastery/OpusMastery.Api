@@ -14,8 +14,10 @@ public static class CoreDependencies
 {
     public static IServiceCollection AddControllersWithFilters(this IServiceCollection serviceCollection)
     {
-        return serviceCollection
-            .AddControllers(options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()))).Services;
+        return serviceCollection.AddControllers(options =>
+        {
+            options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+        }).Services;
     }
 
     public static IServiceCollection AddMiddlewares(this IServiceCollection serviceCollection)
@@ -31,7 +33,7 @@ public static class CoreDependencies
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.IncludeErrorDetails = true;
+                options.IncludeErrorDetails = false;
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

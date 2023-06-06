@@ -20,9 +20,12 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DbSet<SystemUserRoleEntityRights>? UserRoleEntityRights { get; set; }
     public DbSet<SystemUserRefreshToken>? UserRefreshTokens { get; set; }
     public DbSet<SystemUserVerificationCode>? UserVerificationCodes { get; set; }
+    public DbSet<Company>? Companies { get; set; }
     public DbSet<Employee>? Employees { get; set; }
     public DbSet<EmployeeRole>? EmployeeRoles { get; set; }
-    public DbSet<Company>? Companies { get; set; }
+    public DbSet<LeaveApplication>? LeaveApplications { get; set; }
+    public DbSet<LeaveApplicationType>? LeaveTypes { get; set; }
+    public DbSet<LeaveApplicationStatus>? LeaveApplicationStatuses { get; set; }
 
     public DatabaseContext() : this(new ContextOptions { ConnectionString = "Host=;Port=;Database=;Username;Password;" }) { }
 

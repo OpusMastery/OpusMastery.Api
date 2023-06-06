@@ -4,8 +4,10 @@ namespace OpusMastery.Application.Services.Company;
 
 public class CompanyService : ICompanyService
 {
-    public Task CreateDemoCompanyAsync()
+    private readonly ICompanyRepository _companyRepository;
+
+    public CompanyService(ICompanyRepository companyRepository)
     {
-        throw new NotImplementedException();
+        _companyRepository = companyRepository;
     }
 }

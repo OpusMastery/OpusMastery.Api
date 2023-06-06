@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OpusMastery.Domain.Company.Interfaces;
 
 namespace OpusMastery.Admin.Controllers.V1.Company;
 
 [ApiController]
-[Route("api/v1/company")]
+[Route("api/v1/[controller]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CompanyController : ControllerBase
 {
     private readonly ICompanyService _companyService;
@@ -14,8 +17,8 @@ public class CompanyController : ControllerBase
         _companyService = companyService;
     }
 
-    [HttpPost("demo")]
-    public IActionResult CreateDemoCompany()
+    [HttpPost]
+    public IActionResult CreateCompany()
     {
         return Ok();
     }
