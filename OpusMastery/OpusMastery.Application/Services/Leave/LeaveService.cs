@@ -1,4 +1,5 @@
-﻿using OpusMastery.Domain.Leave;
+﻿using OpusMastery.Domain.Identity;
+using OpusMastery.Domain.Leave;
 using OpusMastery.Domain.Leave.Interfaces;
 using LeaveDomain = OpusMastery.Domain.Leave.Leave;
 
@@ -16,5 +17,12 @@ public class LeaveService : ILeaveService
     public Task<List<LeaveDomain>> GetFilteredLeaveApplicationsAsync(Guid companyId, LeaveFilter leaveFilter)
     {
         return _leaveRepository.FilterLeaveApplicationsAsync(companyId, leaveFilter);
+    }
+
+    public async Task<Guid> CreateLeaveApplicationAsync(Guid companyId, LeaveDomain leave)
+    {
+        Guid employeeId = await _leaveRepository.GetEmployeeIdAsync(userId: CurrentContextIdentity.User.Id!.Value, companyId);
+        leave.SetEmployee(employeeId);
+        return await _leaveRepository.AddLeaveApplicationAsync(leave);
     }
 }

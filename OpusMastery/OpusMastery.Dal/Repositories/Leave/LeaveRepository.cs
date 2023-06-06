@@ -3,6 +3,7 @@ using OpusMastery.Dal.Contexts.Interfaces;
 using OpusMastery.Dal.Models;
 using OpusMastery.Domain.Leave;
 using OpusMastery.Domain.Leave.Interfaces;
+using EmployeeDal = OpusMastery.Dal.Models.Employee;
 using LeaveDomain = OpusMastery.Domain.Leave.Leave;
 namespace OpusMastery.Dal.Repositories.Leave;
 
@@ -13,6 +14,11 @@ public class LeaveRepository : ILeaveRepository
     public LeaveRepository(IDatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
+    }
+
+    public async Task<Guid> GetEmployeeIdAsync(Guid userId, Guid companyId)
+    {
+        return (await _databaseContext.Set<EmployeeDal>().AsNoTracking().FirstAsync(employee => employee.UserId == userId && employee.CompanyId == companyId)).Id;
     }
 
     public async Task<List<LeaveDomain>> FilterLeaveApplicationsAsync(Guid companyId, LeaveFilter leaveFilter)
@@ -27,7 +33,7 @@ public class LeaveRepository : ILeaveRepository
 
         if (leaveFilter.ShowAppliedOnly)
         {
-            unfilteredApplications = unfilteredApplications.Where(application => application.Status.Name == nameof(LeaveStatus.Approved));
+            unfilteredApplications = unfilteredApplications.Where(application => application.Status == nameof(LeaveStatus.Approved));
         }
         if (leaveFilter.Types.Any())
         {
@@ -43,5 +49,12 @@ public class LeaveRepository : ILeaveRepository
         }
 
         return (await unfilteredApplications.ToListAsync()).ToEnumerableDomain();
+    }
+
+    public async Task<Guid> AddLeaveApplicationAsync(LeaveDomain leave)
+    {
+        var leaveApplication = leave.ToDal();
+        await _databaseContext.SaveNewAsync(leaveApplication);
+        return leaveApplication.Id;
     }
 }

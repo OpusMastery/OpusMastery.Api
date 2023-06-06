@@ -1,6 +1,6 @@
 ﻿namespace OpusMastery.Admin.Controllers.V1.Leave.Dto;
 
-public class LeaveApplicationDto
+public class LeaveDto
 {
     public required Guid EmployeeId { get; set; }
     public required string FirstName { get; set; }

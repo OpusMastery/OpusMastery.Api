@@ -15,11 +15,12 @@ public class LeaveApplication : EntityBase, IAuditableEntity
     public required Guid TypeId { get; set; }
     public LeaveApplicationType Type { get; set; } = null!;
 
-    public required Guid StatusId { get; set; }
-    public LeaveApplicationStatus Status { get; set; } = null!;
-
     public required DateTime AppliedOn { get; set; }
     public required DateTime AppliedFromDate { get; set; }
     public required DateTime AppliedToDate { get; set; }
+
+    public required string Status { get; set; }
+    public DateTime? ApprovedOn { get; set; }
+    public Guid? ApprovedById { get; set; }
     public string? Reason { get; set; }
 }

@@ -2,19 +2,19 @@
 
 public class Employee
 {
-    public Guid EmployeeId { get; private set; }
+    public Guid Id { get; private set; }
     public string? FirstName { get; private set; }
     public string? LastName { get; private set; }
 
-    private Employee(Guid employeeId, string? firstName, string? lastName)
+    private Employee(Guid id, string? firstName, string? lastName)
     {
-        EmployeeId = employeeId;
+        Id = id;
         FirstName = firstName;
         LastName = lastName;
     }
 
-    public static Employee Create(Guid employeeId, string? firstName = default, string? lastName = default)
+    public static Employee Create(Guid id, string? firstName = default, string? lastName = default)
     {
-        return new Employee(employeeId, firstName, lastName);
+        return new Employee(id, firstName, lastName);
     }
 }

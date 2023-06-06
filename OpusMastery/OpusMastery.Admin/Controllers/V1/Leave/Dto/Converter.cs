@@ -15,22 +15,27 @@ public static class Converter
             leaveFilterDto.ApplicationRange?.AppliedTo);
     }
 
-    public static IEnumerable<LeaveApplicationDto> ToEnumerableDto(this IEnumerable<LeaveDomain> leaves)
+    public static LeaveDomain ToDomain(this LeaveCreationDto leaveCreationDto)
+    {
+        return LeaveDomain.CreateNew(leaveCreationDto.Type.ToEnum<LeaveType>(), leaveCreationDto.AppliedFrom, leaveCreationDto.AppliedTo, leaveCreationDto.Reason);
+    }
+
+    public static IEnumerable<LeaveDto> ToEnumerableDto(this IEnumerable<LeaveDomain> leaves)
     {
         return leaves.Select(ToDto);
     }
 
-    private static LeaveApplicationDto ToDto(this LeaveDomain leave)
+    private static LeaveDto ToDto(this LeaveDomain leave)
     {
-        return new LeaveApplicationDto
+        return new LeaveDto
         {
-            EmployeeId = leave.Employee.EmployeeId,
+            EmployeeId = leave.Employee.Id,
             FirstName = leave.Employee.FirstName!,
             LastName = leave.Employee.LastName!,
             Type = leave.Type.ToEnumName(),
             Status = leave.Status.ToEnumName(),
-            AppliedFrom = leave.AppliedFromDate,
-            AppliedTo = leave.AppliedToDate,
+            AppliedFrom = leave.AppliedFrom,
+            AppliedTo = leave.AppliedTo,
             Reason = leave.Reason
         };
     }

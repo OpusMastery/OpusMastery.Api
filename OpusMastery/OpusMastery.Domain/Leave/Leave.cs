@@ -6,8 +6,8 @@ public class Leave
     public LeaveType Type { get; private set; }
     public LeaveStatus Status { get; private set; }
     public DateTime AppliedOn { get; private set; }
-    public DateTime AppliedFromDate { get; private set; }
-    public DateTime AppliedToDate { get; private set; }
+    public DateTime AppliedFrom { get; private set; }
+    public DateTime AppliedTo { get; private set; }
     public string? Reason { get; private set; }
 
     private Leave(
@@ -15,28 +15,31 @@ public class Leave
         LeaveType type,
         LeaveStatus status,
         DateTime appliedOn,
-        DateTime appliedFromDate,
-        DateTime appliedToDate,
+        DateTime appliedFrom,
+        DateTime appliedTo,
         string? reason)
     {
         Employee = employee;
         Type = type;
         Status = status;
         AppliedOn = appliedOn;
-        AppliedFromDate = appliedFromDate;
-        AppliedToDate = appliedToDate;
+        AppliedFrom = appliedFrom;
+        AppliedTo = appliedTo;
         Reason = reason;
     }
 
-    public static Leave Create(
-        Employee employee,
-        LeaveType type,
-        LeaveStatus status,
-        DateTime appliedOn,
-        DateTime appliedFromDate,
-        DateTime appliedToDate,
-        string? reason)
+    public void SetEmployee(Guid employeeId)
     {
-        return new Leave(employee, type, status, appliedOn, appliedFromDate, appliedToDate, reason);
+        Employee = Employee.Create(employeeId);
+    }
+
+    public static Leave CreateNew(LeaveType type, DateTime appliedFrom, DateTime appliedTo, string? reason)
+    {
+        return new Leave(Employee.Create(Guid.Empty), type, LeaveStatus.Pending, appliedOn: DateTime.UtcNow, appliedFrom, appliedTo, reason);
+    }
+
+    public static Leave Create(Employee employee, LeaveType type, LeaveStatus status, DateTime appliedOn, DateTime appliedFrom, DateTime appliedTo, string? reason)
+    {
+        return new Leave(employee, type, status, appliedOn, appliedFrom, appliedTo, reason);
     }
 }

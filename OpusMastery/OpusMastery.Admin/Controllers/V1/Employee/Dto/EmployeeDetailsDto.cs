@@ -8,6 +8,6 @@ public class EmployeeDetailsDto
     public required string Position { get; set; }
     public required string Status { get; set; }
     public required DateOnly JoiningDate { get; set; }
-    public string? Phone { get; set; }
-    public string? DepartmentName { get; set; }
+    public required string? Phone { get; set; }
+    public required string? DepartmentName { get; set; }
 }

@@ -20,9 +20,16 @@ public class LeaveController : ControllerBase
     }
 
     [HttpPost("filter")]
-    public async Task<ActionResult<IEnumerable<LeaveApplicationDto>>> FilterLeaveApplications([FromHeader, Required] Guid companyId, [FromBody] LeaveFilterDto leaveFilterDto)
+    public async Task<ActionResult<IEnumerable<LeaveDto>>> FilterLeaveApplications([FromHeader, Required] Guid companyId, [FromBody] LeaveFilterDto leaveFilterDto)
     {
         var filteredLeaves = await _leaveService.GetFilteredLeaveApplicationsAsync(companyId, leaveFilterDto.ToDomain());
         return Ok(filteredLeaves.ToEnumerableDto());
+    }
+
+    [HttpPost("apply")]
+    public async Task<ActionResult<Guid>> ApplyLeaveApplication([FromHeader, Required] Guid companyId, [FromBody, Required] LeaveCreationDto leaveCreationDto)
+    {
+        Guid leaveApplicationId = await _leaveService.CreateLeaveApplicationAsync(companyId, leaveCreationDto.ToDomain());
+        return Ok(leaveApplicationId.ToString());
     }
 }

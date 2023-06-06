@@ -14,12 +14,26 @@ public static class Converter
         return leaveApplications.Select(ToDomain).ToList();
     }
 
+    public static LeaveApplication ToDal(this LeaveDomain leave)
+    {
+        return new LeaveApplication
+        {
+            EmployeeId = leave.Employee.Id,
+            TypeId = LeaveTypeManager.GetTypeIdByName(leave.Type),
+            Status = leave.Status.ToEnumName(),
+            AppliedOn = leave.AppliedOn,
+            AppliedFromDate = leave.AppliedFrom,
+            AppliedToDate = leave.AppliedTo,
+            Reason = leave.Reason
+        };
+    }
+
     private static LeaveDomain ToDomain(this LeaveApplication leaveApplication)
     {
         return LeaveDomain.Create(
             leaveApplication.Employee.ToDomain(),
             leaveApplication.Type.Name.ToEnum<LeaveType>(),
-            leaveApplication.Status.Name.ToEnum<LeaveStatus>(),
+            leaveApplication.Status.ToEnum<LeaveStatus>(),
             leaveApplication.AppliedOn,
             leaveApplication.AppliedFromDate,
             leaveApplication.AppliedToDate,
