@@ -14,14 +14,9 @@ public static class Converter
             user.Password,
             user.FirstName,
             user.LastName,
+            user.Role.Name.ToEnum<UserRole>(),
             user.Status.ToEnum<UserStatus>(),
-            user.Role.ToDomain(),
             user.RefreshToken?.ToDomain());
-    }
-
-    public static UserRole ToDomain(this SystemUserRole userRole)
-    {
-        return UserRole.Create(userRole.Id, userRole.Name);
     }
 
     private static UserRefreshToken ToDomain(this SystemUserRefreshToken userRefreshToken)
@@ -39,7 +34,7 @@ public static class Converter
             FirstName = user.FirstName,
             LastName = user.LastName,
             Status = user.Status.ToEnumName(),
-            RoleId = user.Role!.Id
+            RoleId = UserRoleManager.GetRoleIdByName(user.Role)
         };
     }
 

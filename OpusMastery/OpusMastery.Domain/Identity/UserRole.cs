@@ -1,18 +1,25 @@
 ﻿namespace OpusMastery.Domain.Identity;
 
-public class UserRole
+public static class UserRoleManager
 {
-    public Guid Id { get; private set; }
-    public string Name { get; private set; }
-
-    private UserRole(Guid id, string name)
+    private static readonly Dictionary<Guid, UserRole> UserRoles = new()
     {
-        Id = id;
-        Name = name;
-    }
+        { Constants.Role.SupervisorRoleId, UserRole.Supervisor },
+        { Constants.Role.AdministratorRoleId, UserRole.Administrator },
+        { Constants.Role.ManagerRoleId, UserRole.Manager },
+        { Constants.Role.DashboardUserRoleId, UserRole.DashboardUser }
+    };
 
-    public static UserRole Create(Guid id, string name)
+    public static Guid GetRoleIdByName(UserRole role)
     {
-        return new UserRole(id, name);
+        return UserRoles.First(x => x.Value == role).Key;
     }
+}
+
+public enum UserRole
+{
+    Supervisor = 1,
+    Administrator,
+    Manager,
+    DashboardUser
 }

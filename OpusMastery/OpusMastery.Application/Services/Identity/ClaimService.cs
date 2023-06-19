@@ -6,6 +6,7 @@ using OpusMastery.Application.Extensions;
 using OpusMastery.Configuration;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
+using OpusMastery.Extensions;
 
 namespace OpusMastery.Application.Services.Identity;
 
@@ -26,7 +27,7 @@ public class ClaimService : IClaimService
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Name, user.FullName),
-            new(ClaimTypes.Role, user.Role!.Name),
+            new(ClaimTypes.Role, user.Role.ToEnumName()),
             new(Constants.ClaimName.IdentityId, user.Id.ToString())
         };
 
@@ -43,7 +44,7 @@ public class ClaimService : IClaimService
         return _identityRepository.UpdateUserRefreshTokensAsync(user);
     }
 
-    public AccessCredentials AuthenticateUser(ClaimsIdentity claimsIdentity, string refreshToken)
+    public AccessCredentials AuthorizeUser(ClaimsIdentity claimsIdentity, string refreshToken)
     {
         var jwtSecurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,

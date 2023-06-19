@@ -16,15 +16,6 @@ public class IdentityRepository : IIdentityRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<UserRole> GetDashboardUserRoleAsync()
-    {
-        var dashboardUserRole = await _databaseContext.Set<SystemUserRole>()
-            .AsNoTracking()
-            .FirstAsync(role => role.Id == Constants.Role.DashboardUserRoleId);
-
-        return dashboardUserRole.ToDomain();
-    }
-
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         return (await GetUserBaseQuery().FirstOrDefaultAsync(user => user.Email == email))?.ToDomain();

@@ -2,7 +2,6 @@
 
 public interface IIdentityRepository
 {
-    public Task<UserRole> GetDashboardUserRoleAsync();
     public Task<User?> GetUserByEmailAsync(string email);
     public Task<User?> GetUserById(Guid userId);
     public Task<User?> GetUserByCredentialsAsync(UserCredentials credentials);

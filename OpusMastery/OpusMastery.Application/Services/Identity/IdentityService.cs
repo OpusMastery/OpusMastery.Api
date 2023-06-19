@@ -23,17 +23,9 @@ public class IdentityService : IIdentityService
         return user?.Status ?? UserStatus.Nonexistent;
     }
 
-    public Task<User?> GetUserAsync(string email)
-    {
-        return _identityRepository.GetUserByEmailAsync(email);
-    }
-
     public async Task<Guid> RegisterUserAsync(User user)
     {
         (await _identityRepository.GetUserByEmailAsync(user.Email)).ThrowIfNotNull(() => new UserAlreadyExistsException(user.Email));
-
-        var userRole = await _identityRepository.GetDashboardUserRoleAsync();
-        user.SetRole(userRole);
 
         return await _identityRepository.SaveNewUserAsync(user);
     }
@@ -52,7 +44,7 @@ public class IdentityService : IIdentityService
     public async Task<AccessCredentials> RefreshUserAccessTokenAsync(UserRefreshToken refreshToken)
     {
         User? user = await _identityRepository.GetUserById(refreshToken.UserId);
-        if (user is null || !user.ContainsGivenRefreshToken(refreshToken))
+        if (user is null || !user.IsValidRefreshToken(refreshToken))
         {
             throw new RefreshTokenValidationException();
         }
@@ -64,6 +56,6 @@ public class IdentityService : IIdentityService
     {
         ClaimsIdentity claimsIdentity = _claimService.CreateIdentity(user);
         string newRefreshToken = await _claimService.GenerateNewRefreshTokenAsync(user);
-        return _claimService.AuthenticateUser(claimsIdentity, newRefreshToken);
+        return _claimService.AuthorizeUser(claimsIdentity, newRefreshToken);
     }
 }

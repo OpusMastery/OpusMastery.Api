@@ -3,5 +3,5 @@
 public interface IEmployeeRepository
 {
     public Task<List<EmployeeDetails>> GetAllEmployeesByCompanyIdAsync(Guid companyId);
-    public Task<Guid> AddEmployeeToCompanyAsync(Guid userId, EmployeeDetails employeeDetails);
+    public Task<Guid> AddEmployeeToCompanyAsync(EmployeeDetails employeeDetails);
 }

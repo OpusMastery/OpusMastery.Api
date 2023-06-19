@@ -21,7 +21,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<EmployeeDetails>>> GetCompanyEmployees([FromHeader, Required] Guid companyId)
+    public async Task<ActionResult<IEnumerable<EmployeeDetailsDto>>> GetCompanyEmployees([FromHeader, Required] Guid companyId)
     {
         List<EmployeeDetails> employees = await _employeeService.GetAllEmployeesAsync(companyId);
         return Ok(employees.ToEnumerableDto());

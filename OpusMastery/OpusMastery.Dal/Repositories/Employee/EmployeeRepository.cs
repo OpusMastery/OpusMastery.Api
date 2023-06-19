@@ -29,9 +29,9 @@ public class EmployeeRepository : IEmployeeRepository
         return employees.ToEnumerableDomain();
     }
 
-    public async Task<Guid> AddEmployeeToCompanyAsync(Guid userId, EmployeeDetails employeeDetails)
+    public async Task<Guid> AddEmployeeToCompanyAsync(EmployeeDetails employeeDetails)
     {
-        var employee = employeeDetails.ToDal(userId);
+        var employee = employeeDetails.ToDal();
         await _databaseContext.SaveNewAsync(employee);
         return employee.Id;
     }

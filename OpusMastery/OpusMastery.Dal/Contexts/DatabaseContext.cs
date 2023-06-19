@@ -104,16 +104,16 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     private async Task HandleSavingChangesAsync(Guid? userId)
     {
-        var systemUser = await Set<SystemUser>().AsNoTracking().FirstOrDefaultAsync(user => user.Id == userId);
-
-        if (systemUser?.RoleId is null)
+        if (!userId.HasValue)
         {
             return;
         }
 
         List<SystemUserRoleEntityRights> entityRights = await Set<SystemUserRoleEntityRights>()
             .AsNoTracking()
-            .Where(entityRight => entityRight.RoleId == systemUser.RoleId)
+            .Include(x => x.Role)
+                .ThenInclude(x => x.Users)
+            .Where(entityRight => entityRight.Role.Users.Any(user => user.Id == userId && user.RoleId == entityRight.RoleId))
             .ToListAsync();
 
         foreach (EntityEntry entityEntry in ChangeTracker.Entries())

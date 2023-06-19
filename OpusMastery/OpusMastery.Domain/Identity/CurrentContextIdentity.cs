@@ -7,7 +7,7 @@ public static class CurrentContextIdentity
     public static UserIdentifier User
     {
         get => UserIdentifier.Value ?? throw new InvalidOperationException($"{nameof(Identity.UserIdentifier)} has not been set for the {nameof(CurrentContextIdentity)}");
-        private set => UserIdentifier.Value = value;
+        set => UserIdentifier.Value = value;
     }
 
     public static IDisposable SetIdentifier(UserIdentifier userIdentifier)

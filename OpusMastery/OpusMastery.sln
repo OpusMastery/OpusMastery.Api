@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Extensions", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Exceptions", "OpusMastery.Exceptions\OpusMastery.Exceptions.csproj", "{4648BEE5-2CEF-4A1E-B045-94BFAB360710}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0D56C819-16E1-45F1-88F0-F79BDE0AC8D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpusMastery.Domain.UnitTests", "OpusMastery.Domain.UnitTests\OpusMastery.Domain.UnitTests.csproj", "{68681A30-B807-410B-BB9B-F06F1A001F31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +64,12 @@ Global
 		{4648BEE5-2CEF-4A1E-B045-94BFAB360710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4648BEE5-2CEF-4A1E-B045-94BFAB360710}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4648BEE5-2CEF-4A1E-B045-94BFAB360710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68681A30-B807-410B-BB9B-F06F1A001F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68681A30-B807-410B-BB9B-F06F1A001F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68681A30-B807-410B-BB9B-F06F1A001F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68681A30-B807-410B-BB9B-F06F1A001F31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{68681A30-B807-410B-BB9B-F06F1A001F31} = {0D56C819-16E1-45F1-88F0-F79BDE0AC8D1}
 	EndGlobalSection
 EndGlobal

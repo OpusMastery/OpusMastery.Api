@@ -3,11 +3,14 @@
 public static class Constants
 {
     public const string JwtAuthenticationType = "Bearer";
-    public const string DefaultPassword = "6a1af657cb6d6b081706a8d32b779f1b7212ef732403f382e84923242c63125e6890a87d8195794d21336a1de84ecbc9988cdcddb70bd7cc0b2980f4f766ecb1";
+    public const string DefaultPassword = "ACc5894nGQAeiZdClrNZ";
     public const string FullAccessRight = "*";
 
     public static class Role
     {
+        public static readonly Guid SupervisorRoleId = new("abb68e25-f550-4946-8b27-2be0d405c94c");
+        public static readonly Guid AdministratorRoleId = new("e4ecd2dd-2762-4d32-b0b6-602e30f34844");
+        public static readonly Guid ManagerRoleId = new("1c4ffcf7-1aed-49ee-b2f1-b0b2a3b8c5d6");
         public static readonly Guid DashboardUserRoleId = new("55a893fb-0bfa-49bc-b65c-cff598bb090e");
     }
 

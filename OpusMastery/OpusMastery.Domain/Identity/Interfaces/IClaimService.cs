@@ -6,5 +6,5 @@ public interface IClaimService
 {
     public ClaimsIdentity CreateIdentity(User user);
     public Task<string> GenerateNewRefreshTokenAsync(User user);
-    public AccessCredentials AuthenticateUser(ClaimsIdentity claimsIdentity, string refreshToken);
+    public AccessCredentials AuthorizeUser(ClaimsIdentity claimsIdentity, string refreshToken);
 }

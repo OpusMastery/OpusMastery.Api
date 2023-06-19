@@ -21,7 +21,7 @@ public class LeaveService : ILeaveService
 
     public async Task<Guid> CreateLeaveApplicationAsync(Guid companyId, LeaveDomain leave)
     {
-        Guid employeeId = await _leaveRepository.GetEmployeeIdAsync(userId: CurrentContextIdentity.User.Id!.Value, companyId);
+        Guid employeeId = await _leaveRepository.GetEmployeeIdAsync(CurrentContextIdentity.User.GetUserIdOrThrow(), companyId);
         leave.SetEmployee(employeeId);
         return await _leaveRepository.AddLeaveApplicationAsync(leave);
     }

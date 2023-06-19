@@ -1,4 +1,5 @@
 ﻿using OpusMastery.Domain.Employee;
+using OpusMastery.Domain.Identity;
 using OpusMastery.Extensions;
 using EmployeeRoleDal = OpusMastery.Dal.Models.EmployeeRole;
 using EmployeeDal = OpusMastery.Dal.Models.Employee;
@@ -12,11 +13,11 @@ public static class Converter
         return employeesDal.Select(ToDomain).ToList();
     }
 
-    public static EmployeeDal ToDal(this EmployeeDetails employeeDetails, Guid userId)
+    public static EmployeeDal ToDal(this EmployeeDetails employeeDetails)
     {
         return new EmployeeDal
         {
-            UserId = userId,
+            UserId = CurrentContextIdentity.User.GetUserIdOrThrow(),
             CompanyId = employeeDetails.CompanyId,
             RoleId = EmployeeRoleManager.GetRoleIdByName(employeeDetails.Role),
             ContactEmail = employeeDetails.Email,

@@ -9,32 +9,27 @@ public class User
     public string LastName { get; private set; }
     public string FullName => $"{FirstName} {LastName}";
     public UserStatus Status { get; private set; }
-    public UserRole? Role { get; private set; }
+    public UserRole Role { get; private set; }
     public UserRefreshToken? RefreshToken { get; private set; }
 
-    private User(Guid id, string email, string password, string firstName, string lastName, UserStatus status)
+    private User(Guid id, string email, string password, string firstName, string lastName, UserRole role, UserStatus status)
     {
         Id = id;
         Email = email;
         Password = password;
         FirstName = firstName;
         LastName = lastName;
+        Role = role;
         Status = status;
     }
 
-    private User(Guid id, string email, string password, string firstName, string lastName, UserStatus status, UserRole role, UserRefreshToken? refreshToken)
-        : this(id, email, password, firstName, lastName, status)
+    private User(Guid id, string email, string password, string firstName, string lastName, UserRole role, UserStatus status, UserRefreshToken? refreshToken)
+        : this(id, email, password, firstName, lastName, role, status)
     {
-        Role = role;
         RefreshToken = refreshToken;
     }
 
-    public void SetRole(UserRole role)
-    {
-        Role = role;
-    }
-
-    public bool ContainsGivenRefreshToken(UserRefreshToken refreshToken)
+    public bool IsValidRefreshToken(UserRefreshToken refreshToken)
     {
         return RefreshToken is not null && RefreshToken.Value == refreshToken.Value && RefreshToken.ExpiresOn > DateTime.UtcNow;
     }
@@ -46,11 +41,11 @@ public class User
 
     public static User CreateNew(string email, string password, string firstName, string lastName)
     {
-        return new User(Guid.NewGuid(), email, password, firstName, lastName, UserStatus.NewlyCreated);
+        return new User(Guid.NewGuid(), email, password, firstName, lastName, UserRole.DashboardUser, UserStatus.NewlyCreated);
     }
 
-    public static User Create(Guid id, string email, string password, string firstName, string lastName, UserStatus status, UserRole role, UserRefreshToken? refreshToken)
+    public static User Create(Guid id, string email, string password, string firstName, string lastName, UserRole role, UserStatus status, UserRefreshToken? refreshToken)
     {
-        return new User(id, email, password, firstName, lastName, status, role, refreshToken);
+        return new User(id, email, password, firstName, lastName, role, status, refreshToken);
     }
 }
