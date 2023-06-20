@@ -20,7 +20,7 @@ public class LeaveHttpService : ILeaveHttpService
         string userCountryCode = GetUserLocale(holidayFilter.Timezone) ?? "US";
         Stream content = await _httpClient.GetStreamAsync($"https://date.nager.at/api/v3/PublicHolidays/{DateTime.UtcNow.Year}/{userCountryCode}");
 
-        return (await JsonSerializer.DeserializeAsync<List<HolidayDto>>(content)).ToEnumerableDomain();
+        return (await JsonSerializer.DeserializeAsync<IEnumerable<HolidayDto>>(content)).ToEnumerableDomain();
     }
 
     private static string? GetUserLocale(string timezone)
