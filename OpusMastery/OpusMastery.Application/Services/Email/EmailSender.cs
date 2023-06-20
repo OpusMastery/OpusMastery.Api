@@ -1,4 +1,5 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
 using OpusMastery.Domain.Email.Interfaces;
@@ -33,7 +34,7 @@ public class EmailSender : IEmailSender
 
         using var emailClient = new SmtpClient();
 
-        await emailClient.ConnectAsync("smtp.porkbun.com", 587, true);
+        await emailClient.ConnectAsync("smtp.porkbun.com", 587, SecureSocketOptions.StartTls);
         await emailClient.AuthenticateAsync("support@opusmastery.org", "Freedom1");
 
         await emailClient.SendAsync(emailMessage);
