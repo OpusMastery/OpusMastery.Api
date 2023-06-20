@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpusMastery.Admin.Controllers.V1.Leave.Dto;
+using OpusMastery.Admin.Controllers.V1.Leave.Dto.Holiday;
+using OpusMastery.Domain.Leave.Holiday;
 using OpusMastery.Domain.Leave.Interfaces;
 
 namespace OpusMastery.Admin.Controllers.V1.Leave;
@@ -13,10 +15,19 @@ namespace OpusMastery.Admin.Controllers.V1.Leave;
 public class LeaveController : ControllerBase
 {
     private readonly ILeaveService _leaveService;
+    private readonly ILeaveHttpService _leaveHttpService;
 
-    public LeaveController(ILeaveService leaveService)
+    public LeaveController(ILeaveService leaveService, ILeaveHttpService leaveHttpService)
     {
         _leaveService = leaveService;
+        _leaveHttpService = leaveHttpService;
+    }
+
+    [HttpPost("holidays")]
+    public async Task<ActionResult<IEnumerable<LocalHolidayDto>>> GetLocalHolidays([FromBody, Required] HolidayFilterDto holidayFilterDto)
+    {
+        List<LocalHoliday> holidays = await _leaveHttpService.GetLocalHolidaysAsync(holidayFilterDto.ToDomain());
+        return Ok(holidays.ToEnumerableDto());
     }
 
     [HttpPost("filter")]

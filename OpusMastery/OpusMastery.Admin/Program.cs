@@ -21,7 +21,9 @@ builder.Services
 builder.Services.AddDatabase(applicationSettings);
 
 // Business dependencies
-builder.Services.AddBusinessServices();
+builder.Services
+    .AddBusinessServices()
+    .AddHttpServices();
 
 WebApplication application = builder.Build();
 await application.InitializeDatabaseAsync();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OpusMastery.Application.HttpServices;
 using OpusMastery.Application.Services.Company;
 using OpusMastery.Application.Services.Email;
 using OpusMastery.Application.Services.Employee;
@@ -31,5 +32,10 @@ public static class BusinessDependencies
             .AddTransient<IEmployeeRepository, EmployeeRepository>()
             .AddTransient<ILeaveService, LeaveService>()
             .AddTransient<ILeaveRepository, LeaveRepository>();
+    }
+
+    public static IServiceCollection AddHttpServices(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection.AddHttpClient<ILeaveHttpService, LeaveHttpService>().Services;
     }
 }
