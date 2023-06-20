@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OpusMastery.Application.Services.Company;
+using OpusMastery.Application.Services.Email;
 using OpusMastery.Application.Services.Employee;
 using OpusMastery.Application.Services.Identity;
 using OpusMastery.Application.Services.Leave;
@@ -8,6 +9,7 @@ using OpusMastery.Dal.Repositories.Employee;
 using OpusMastery.Dal.Repositories.Identity;
 using OpusMastery.Dal.Repositories.Leave;
 using OpusMastery.Domain.Company.Interfaces;
+using OpusMastery.Domain.Email.Interfaces;
 using OpusMastery.Domain.Employee.Interfaces;
 using OpusMastery.Domain.Identity.Interfaces;
 using OpusMastery.Domain.Leave.Interfaces;
@@ -22,6 +24,7 @@ public static class BusinessDependencies
             .AddTransient<IClaimService, ClaimService>()
             .AddTransient<IIdentityService, IdentityService>()
             .AddTransient<IIdentityRepository, IdentityRepository>()
+            .AddTransient<IEmailSender, EmailSender>()
             .AddTransient<ICompanyService, CompanyService>()
             .AddTransient<ICompanyRepository, CompanyRepository>()
             .AddTransient<IEmployeeService, EmployeeService>()

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using OpusMastery.Domain.Email.Interfaces;
 using OpusMastery.Domain.Identity;
 using OpusMastery.Domain.Identity.Interfaces;
 using OpusMastery.Exceptions.Identity;
@@ -9,11 +10,13 @@ namespace OpusMastery.Application.Services.Identity;
 public class IdentityService : IIdentityService
 {
     private readonly IClaimService _claimService;
+    private readonly IEmailSender _emailSender;
     private readonly IIdentityRepository _identityRepository;
 
-    public IdentityService(IClaimService claimService, IIdentityRepository identityRepository)
+    public IdentityService(IClaimService claimService, IEmailSender emailSender, IIdentityRepository identityRepository)
     {
         _claimService = claimService;
+        _emailSender = emailSender;
         _identityRepository = identityRepository;
     }
 
@@ -27,7 +30,11 @@ public class IdentityService : IIdentityService
     {
         (await _identityRepository.GetUserByEmailAsync(user.Email)).ThrowIfNotNull(() => new UserAlreadyExistsException(user.Email));
 
-        return await _identityRepository.SaveNewUserAsync(user);
+        Guid createdUserId = await _identityRepository.SaveNewUserAsync(user);
+
+        await _emailSender.SendAsync(user);
+
+        return createdUserId;
     }
 
     public async Task<AccessCredentials> LoginUserAsync(UserCredentials credentials)
@@ -56,6 +63,6 @@ public class IdentityService : IIdentityService
     {
         ClaimsIdentity claimsIdentity = _claimService.CreateIdentity(user);
         string newRefreshToken = await _claimService.GenerateNewRefreshTokenAsync(user);
-        return _claimService.AuthorizeUser(claimsIdentity, newRefreshToken);
+        return await _claimService.AuthorizeUserAsync(claimsIdentity, newRefreshToken);
     }
 }

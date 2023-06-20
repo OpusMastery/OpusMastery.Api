@@ -44,7 +44,7 @@ public class ClaimService : IClaimService
         return _identityRepository.UpdateUserRefreshTokensAsync(user);
     }
 
-    public AccessCredentials AuthorizeUser(ClaimsIdentity claimsIdentity, string refreshToken)
+    public Task<AccessCredentials> AuthorizeUserAsync(ClaimsIdentity claimsIdentity, string refreshToken)
     {
         var jwtSecurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
@@ -55,6 +55,6 @@ public class ClaimService : IClaimService
             signingCredentials: new SigningCredentials(_jwtSettings.SecretKey.GetSecurityKey(), SecurityAlgorithms.HmacSha512));
 
         string encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        return AccessCredentials.Create(encodedAccessToken, refreshToken, Constants.JwtAuthenticationType);
+        return Task.FromResult(AccessCredentials.Create(encodedAccessToken, refreshToken, Constants.JwtAuthenticationType));
     }
 }
