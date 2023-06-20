@@ -18,6 +18,11 @@ public class EmployeeService : IEmployeeService
         _employeeRepository = employeeRepository;
     }
 
+    public Task<EmployeeDetails> GetEmployeeDetailsAsync()
+    {
+        return _employeeRepository.GetEmployeeDetailsAsync(CurrentContextIdentity.User.GetUserIdOrThrow());
+    }
+
     public Task<List<EmployeeDetails>> GetAllEmployeesAsync(Guid companyId)
     {
         return _employeeRepository.GetAllEmployeesByCompanyIdAsync(companyId);

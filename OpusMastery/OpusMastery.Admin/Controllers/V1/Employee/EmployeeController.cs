@@ -20,6 +20,13 @@ public class EmployeeController : ControllerBase
         _employeeService = employeeService;
     }
 
+    [HttpGet("details")]
+    public async Task<ActionResult<BasicEmployeeDetailsDto>> GetBasicEmployeeDetails()
+    {
+        EmployeeDetails employee = await _employeeService.GetEmployeeDetailsAsync();
+        return Ok(employee.ToBasicDto());
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDetailsDto>>> GetCompanyEmployees([FromHeader, Required] Guid companyId)
     {

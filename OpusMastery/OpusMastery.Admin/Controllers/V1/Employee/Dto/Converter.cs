@@ -5,6 +5,11 @@ namespace OpusMastery.Admin.Controllers.V1.Employee.Dto;
 
 public static class Converter
 {
+    public static BasicEmployeeDetailsDto ToBasicDto(this EmployeeDetails employeeDetails)
+    {
+        return new BasicEmployeeDetailsDto { Email = employeeDetails.Email, EmployeeId = employeeDetails.Id, CompanyId = employeeDetails.CompanyId };
+    }
+
     public static IEnumerable<EmployeeDetailsDto> ToEnumerableDto(this IEnumerable<EmployeeDetails> employeesDetails)
     {
         return employeesDetails.Select(ToDto);

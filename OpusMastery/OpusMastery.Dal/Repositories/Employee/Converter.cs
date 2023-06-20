@@ -17,6 +17,7 @@ public static class Converter
     {
         return new EmployeeDal
         {
+            Id = employeeDetails.Id,
             UserId = CurrentContextIdentity.User.GetUserIdOrThrow(),
             CompanyId = employeeDetails.CompanyId,
             RoleId = EmployeeRoleManager.GetRoleIdByName(employeeDetails.Role),
@@ -29,9 +30,10 @@ public static class Converter
         };
     }
 
-    private static EmployeeDetails ToDomain(this EmployeeDal employeeDal)
+    public static EmployeeDetails ToDomain(this EmployeeDal employeeDal)
     {
         return EmployeeDetails.Create(
+            employeeDal.Id,
             employeeDal.CompanyId,
             employeeDal.User.FirstName,
             employeeDal.User.LastName,

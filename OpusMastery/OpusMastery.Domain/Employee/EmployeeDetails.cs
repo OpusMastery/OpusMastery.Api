@@ -2,6 +2,7 @@
 
 public class EmployeeDetails
 {
+    public Guid Id { get; private set; }
     public Guid CompanyId { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -14,6 +15,7 @@ public class EmployeeDetails
     public string? DepartmentName { get; private set; }
 
     private EmployeeDetails(
+        Guid id,
         Guid companyId,
         string firstName,
         string lastName,
@@ -25,6 +27,7 @@ public class EmployeeDetails
         string? phone,
         string? departmentName)
     {
+        Id = id;
         CompanyId = companyId;
         FirstName = firstName;
         LastName = lastName;
@@ -48,10 +51,11 @@ public class EmployeeDetails
         string? phone,
         string? departmentName)
     {
-        return new EmployeeDetails(companyId, firstName, lastName, email, position, EmployeeStatus.Unconfirmed, joiningDate, role, phone, departmentName);
+        return new EmployeeDetails(Guid.NewGuid(), companyId, firstName, lastName, email, position, EmployeeStatus.Unconfirmed, joiningDate, role, phone, departmentName);
     }
 
     public static EmployeeDetails Create(
+        Guid id,
         Guid companyId,
         string firstName,
         string lastName,
@@ -63,6 +67,6 @@ public class EmployeeDetails
         string? phone,
         string? departmentName)
     {
-        return new EmployeeDetails(companyId, firstName, lastName, email, position, status, joiningDate, role, phone, departmentName);
+        return new EmployeeDetails(id, companyId, firstName, lastName, email, position, status, joiningDate, role, phone, departmentName);
     }
 }
