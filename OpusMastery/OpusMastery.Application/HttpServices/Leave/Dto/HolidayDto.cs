@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OpusMastery.Application.HttpServices.Dto;
+namespace OpusMastery.Application.HttpServices.Leave.Dto;
 
 public class HolidayDto
 {

@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using NodaTime.TimeZones;
-using OpusMastery.Application.HttpServices.Dto;
+using OpusMastery.Application.HttpServices.Leave.Dto;
 using OpusMastery.Domain.Leave.Holiday;
 using OpusMastery.Domain.Leave.Interfaces;
 
-namespace OpusMastery.Application.HttpServices;
+namespace OpusMastery.Application.HttpServices.Leave;
 
 public class LeaveHttpService : ILeaveHttpService
 {
@@ -18,7 +18,7 @@ public class LeaveHttpService : ILeaveHttpService
     public async Task<List<LocalHoliday>> GetLocalHolidaysAsync(HolidayFilter holidayFilter)
     {
         string userCountryCode = GetUserLocale(holidayFilter.Timezone) ?? "US";
-        Stream content = await _httpClient.GetStreamAsync($"https://date.nager.at/api/v3/PublicHolidays/{DateTime.UtcNow.Year}/{userCountryCode}");
+        Stream content = await _httpClient.GetStreamAsync($"https://date.nager.at/api/v3/PublicHolidays/{holidayFilter.StartingDate.Year}/{userCountryCode}");
 
         return (await JsonSerializer.DeserializeAsync<IEnumerable<HolidayDto>>(content)).ToEnumerableDomain();
     }

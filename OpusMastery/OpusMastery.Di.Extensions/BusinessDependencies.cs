@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OpusMastery.Application.HttpServices;
+using OpusMastery.Application.HttpServices.Leave;
 using OpusMastery.Application.Services.Company;
 using OpusMastery.Application.Services.Email;
 using OpusMastery.Application.Services.Employee;
