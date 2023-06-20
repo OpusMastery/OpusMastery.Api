@@ -3,18 +3,16 @@
 public class HolidayFilter
 {
     public string Timezone { get; private set; }
-    public DateTime StartingDate { get; private set; }
-    public DateTime EndingDate { get; private set; }
+    public DateOnly? EndingDate { get; private set; }
 
-    private HolidayFilter(string timezone, DateTime startingDate, DateTime endingDate)
+    private HolidayFilter(string timezone, DateOnly? endingDate)
     {
         Timezone = timezone;
-        StartingDate = startingDate;
         EndingDate = endingDate;
     }
 
-    public static HolidayFilter Create(string timezone, DateTime startingDate, DateTime endingDate)
+    public static HolidayFilter Create(string timezone, DateOnly? endingDate)
     {
-        return new HolidayFilter(timezone, startingDate, endingDate);
+        return new HolidayFilter(timezone, endingDate);
     }
 }

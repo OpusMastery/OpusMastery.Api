@@ -3,6 +3,5 @@
 public class HolidayFilterDto
 {
     public required string Timezone { get; set; }
-    public DateTime StartingDate { get; set; } = DateTime.UtcNow;
-    public DateTime EndingDate { get; set; } = DateTime.UtcNow.AddMonths(6);
+    public DateOnly? EndingDate { get; set; }
 }

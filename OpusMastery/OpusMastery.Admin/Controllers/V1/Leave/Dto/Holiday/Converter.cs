@@ -6,7 +6,7 @@ public static class Converter
 {
     public static HolidayFilter ToDomain(this HolidayFilterDto holidayFilterDto)
     {
-        return HolidayFilter.Create(holidayFilterDto.Timezone, holidayFilterDto.StartingDate, holidayFilterDto.EndingDate);
+        return HolidayFilter.Create(holidayFilterDto.Timezone, holidayFilterDto.EndingDate);
     }
 
     public static IEnumerable<LocalHolidayDto> ToEnumerableDto(this IEnumerable<LocalHoliday> localHolidays)

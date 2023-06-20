@@ -18,9 +18,11 @@ public class LeaveHttpService : ILeaveHttpService
     public async Task<List<LocalHoliday>> GetLocalHolidaysAsync(HolidayFilter holidayFilter)
     {
         string userCountryCode = GetUserLocale(holidayFilter.Timezone) ?? "US";
-        Stream content = await _httpClient.GetStreamAsync($"https://date.nager.at/api/v3/PublicHolidays/{holidayFilter.StartingDate.Year}/{userCountryCode}");
+        Stream content = await _httpClient.GetStreamAsync($"https://date.nager.at/api/v3/NextPublicHolidays/{userCountryCode}");
 
-        return (await JsonSerializer.DeserializeAsync<IEnumerable<HolidayDto>>(content)).ToEnumerableDomain();
+        List<LocalHoliday> localHolidays = (await JsonSerializer.DeserializeAsync<IEnumerable<HolidayDto>>(content)).ToEnumerableDomain();
+
+        return holidayFilter.EndingDate is not null ? localHolidays.Where(holiday => holiday.Date <= holidayFilter.EndingDate).ToList() : localHolidays;
     }
 
     private static string? GetUserLocale(string timezone)
