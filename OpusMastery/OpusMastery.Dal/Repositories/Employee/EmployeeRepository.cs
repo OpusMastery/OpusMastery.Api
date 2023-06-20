@@ -22,6 +22,8 @@ public class EmployeeRepository : IEmployeeRepository
     {
         var employee = (await _databaseContext.Set<EmployeeDal>()
                 .AsNoTracking()
+                .Include(x => x.User)
+                .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.UserId == userId))
             .ThrowIfNull(() => new EmployeeNotFoundException(userId));
 
